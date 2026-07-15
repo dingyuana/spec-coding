@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/></marker>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#grid)" opacity="0.3"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+  <text x="480" y="40" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">SDD+TDD 完整路径时光线</text>
+
+  <!-- Timeline axis -->
+  <line x1="40" y1="280" x2="920" y2="280" stroke="#22d3ee" stroke-width="2" fill-opacity="0.5"/>
+  <line x1="40" y1="280" x2="920" y2="280" stroke="#22d3ee" stroke-width="1" fill-opacity="0.3"/>
+
+  <!-- SDD Phase - Blue nodes (00-05) -->
+  <g>
+    <circle cx="70" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="70" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">00</text>
+    <text x="70" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">开篇</text>
+  </g>
+  <g>
+    <circle cx="170" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="170" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">01</text>
+    <text x="170" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">SPEC</text>
+  </g>
+  <g>
+    <circle cx="270" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="270" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">02</text>
+    <text x="270" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">PLAN</text>
+  </g>
+  <g>
+    <circle cx="370" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="370" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">03</text>
+    <text x="370" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">AGENT</text>
+  </g>
+  <g>
+    <circle cx="455" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="455" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">04</text>
+    <text x="455" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">🔧</text>
+  </g>
+  <g>
+    <circle cx="540" cy="280" r="18" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5"/>
+    <text x="540" y="285" fill="#3b82f6" font-size="10" font-weight="700" text-anchor="middle">05</text>
+    <text x="540" y="260" fill="#3b82f6" font-size="9" text-anchor="middle">🌱</text>
+  </g>
+
+  <!-- SDD divider -->
+  <rect x="48" y="310" width="505" height="24" rx="6" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <text x="300" y="327" fill="#3b82f6" font-size="10" font-weight="600" text-anchor="middle">SDD 阶段 — 先想清楚再做</text>
+
+  <!-- TDD Phase - RED -->
+  <g>
+    <circle cx="650" cy="280" r="18" fill="#0f172a" stroke="#ef4444" stroke-width="2.5"/>
+    <text x="650" y="285" fill="#ef4444" font-size="10" font-weight="700" text-anchor="middle">06</text>
+    <text x="650" y="260" fill="#ef4444" font-size="9" text-anchor="middle">RED</text>
+  </g>
+
+  <rect x="580" y="310" width="140" height="24" rx="6" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+  <text x="650" y="327" fill="#ef4444" font-size="10" font-weight="600" text-anchor="middle">TDD RED — 25 条全红</text>
+
+  <!-- GREEN -->
+  <g>
+    <circle cx="770" cy="280" r="18" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+    <text x="770" y="285" fill="#22c55e" font-size="10" font-weight="700" text-anchor="middle">07</text>
+    <text x="770" y="260" fill="#22c55e" font-size="9" text-anchor="middle">GREEN</text>
+  </g>
+
+  <rect x="730" y="310" width="80" height="24" rx="6" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e" stroke-width="1"/>
+  <text x="770" y="327" fill="#22c55e" font-size="10" font-weight="600" text-anchor="middle">GREEN</text>
+
+  <!-- REFACTOR -->
+  <g>
+    <circle cx="890" cy="280" r="18" fill="#0f172a" stroke="#22d3ee" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="890" y="285" fill="#22d3ee" font-size="10" font-weight="700" text-anchor="middle">08</text>
+    <text x="890" y="260" fill="#22d3ee" font-size="9" text-anchor="middle">REFACTOR</text>
+  </g>
+
+  <rect x="860" y="310" width="60" height="24" rx="6" fill="#22d3ee" fill-opacity="0.15" stroke="#22d3ee" stroke-width="1"/>
+  <text x="890" y="327" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">REFACTOR</text>
+
+  <!-- Bottom description boxes -->
+  <rect x="60" y="370" width="840" height="60" rx="10" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="480" y="395" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle" filter="url(#glow)">SDD（先想清楚）→ TDD RED（测试驱动）→ GREEN（实现）→ REFACTOR（验证）</text>
+  <text x="480" y="418" fill="#94a3b8" font-size="10" text-anchor="middle">一条完整的从"需求"到"可维护代码"的路径</text>
+
+  <text x="480" y="480" fill="#22d3ee" font-size="11" text-anchor="middle" filter="url(#glow)">8 篇文章、9 个源码文件、25 条测试、全部通过 ✅</text>
+</svg>

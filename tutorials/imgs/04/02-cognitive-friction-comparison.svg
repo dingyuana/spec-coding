@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/></marker>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#grid)" opacity="0.3"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+  <text x="480" y="40" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">认知摩擦对比</text>
+
+  <!-- Left: 无脚手架 -->
+  <rect x="40" y="70" width="400" height="430" rx="12" fill="#1a1a2e" fill-opacity="0.4" stroke="#6b7280" stroke-width="1"/>
+  <text x="240" y="100" fill="#9ca3af" font-size="14" font-weight="700" text-anchor="middle">无脚手架 — 40 分钟</text>
+
+  <rect x="80" y="130" width="320" height="40" rx="6" fill="#0f172a" stroke="#6b7280" stroke-width="1"/>
+  <text x="240" y="155" fill="#9ca3af" font-size="11" text-anchor="middle">1. clone 项目</text>
+  <line x1="240" y1="170" x2="240" y2="190" stroke="#6b7280" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="80" y="195" width="320" height="40" rx="6" fill="#0f172a" stroke="#6b7280" stroke-width="1"/>
+  <text x="240" y="220" fill="#9ca3af" font-size="11" text-anchor="middle">2. 找文档：怎么启动？</text>
+  <line x1="240" y1="235" x2="240" y2="255" stroke="#6b7280" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="80" y="260" width="320" height="40" rx="6" fill="#0f172a" stroke="#6b7280" stroke-width="1"/>
+  <text x="240" y="285" fill="#9ca3af" font-size="11" text-anchor="middle">3. 猜命令：node？npm？</text>
+  <line x1="240" y1="300" x2="240" y2="320" stroke="#6b7280" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="80" y="325" width="320" height="40" rx="6" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="240" y="350" fill="#fca5a5" font-size="11" text-anchor="middle">4. ❌ 报错：JWT_SECRET 未定义</text>
+  <line x1="240" y1="365" x2="240" y2="385" stroke="#ef4444" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="80" y="390" width="320" height="40" rx="6" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="240" y="415" fill="#fca5a5" font-size="11" text-anchor="middle">5. ❌ 放弃，"明天再弄"</text>
+
+  <!-- Right: 有脚手架 -->
+  <rect x="520" y="70" width="400" height="430" rx="12" fill="#0a1628" fill-opacity="0.6" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="720" y="100" fill="#22d3ee" font-size="14" font-weight="700" text-anchor="middle">有脚手架 — 5 分钟</text>
+
+  <rect x="560" y="130" width="320" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="720" y="155" fill="#60a5fa" font-size="11" text-anchor="middle">1. git clone</text>
+  <line x1="720" y1="170" x2="720" y2="190" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="560" y="195" width="320" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="720" y="220" fill="#60a5fa" font-size="11" text-anchor="middle">2. npm install</text>
+  <line x1="720" y1="235" x2="720" y2="255" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="560" y="260" width="320" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="720" y="285" fill="#60a5fa" font-size="11" text-anchor="middle">3. cp .env.example .env</text>
+  <line x1="720" y1="300" x2="720" y2="320" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="560" y="325" width="320" height="40" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="720" y="350" fill="#86efac" font-size="11" text-anchor="middle">4. ✅ npm run dev</text>
+  <line x1="720" y1="365" x2="720" y2="385" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="560" y="390" width="320" height="40" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="720" y="415" fill="#86efac" font-size="11" text-anchor="middle">5. ✅ 跑起来了！</text>
+
+  <text x="480" y="510" fill="#22d3ee" font-size="11" text-anchor="middle" filter="url(#glow)">从 40 分钟到 5 分钟 — 脚手架消化了认知摩擦</text>
+</svg>

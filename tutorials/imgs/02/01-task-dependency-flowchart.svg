@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/></marker>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#grid)" opacity="0.3"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+  <text x="480" y="40" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">任务依赖地图</text>
+
+  <!-- Lane 1: P0 -->
+  <rect x="60" y="70" width="840" height="80" rx="8" fill="#1a3a6a" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
+  <text x="80" y="95" fill="#3b82f6" font-size="12" font-weight="700">P0 工程基础</text>
+
+  <rect x="80" y="110" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="150" y="132" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ SPEC.md</text>
+
+  <rect x="240" y="110" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="310" y="132" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ PLAN.md</text>
+
+  <rect x="400" y="110" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="470" y="132" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ AGENT.md</text>
+
+  <rect x="560" y="110" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="630" y="132" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ package.json</text>
+
+  <line x1="220" y1="127" x2="238" y2="127" stroke="#22d3ee" stroke-width="1"/>
+  <line x1="380" y1="127" x2="398" y2="127" stroke="#22d3ee" stroke-width="1"/>
+  <line x1="540" y1="127" x2="558" y2="127" stroke="#22d3ee" stroke-width="1"/>
+
+  <!-- Vertical arrow P0 → P1 -->
+  <line x1="480" y1="150" x2="480" y2="175" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Lane 2: P1 -->
+  <rect x="60" y="180" width="840" height="80" rx="8" fill="#1a3a6a" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
+  <text x="80" y="205" fill="#3b82f6" font-size="12" font-weight="700">P1 种子数据</text>
+
+  <rect x="80" y="220" width="200" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="180" y="242" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ scripts/seed.js</text>
+
+  <!-- Vertical arrow P1 → P2 -->
+  <line x1="480" y1="260" x2="480" y2="285" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Lane 3: P2 -->
+  <rect x="60" y="290" width="840" height="80" rx="8" fill="#1a3a6a" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
+  <text x="80" y="315" fill="#3b82f6" font-size="12" font-weight="700">P2 TDD</text>
+
+  <rect x="80" y="330" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="150" y="352" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ 单元测试</text>
+
+  <rect x="240" y="330" width="140" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="310" y="352" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ 集成测试</text>
+
+  <line x1="220" y1="347" x2="238" y2="347" stroke="#22d3ee" stroke-width="1"/>
+
+  <!-- Vertical arrow P2 → P3 -->
+  <line x1="480" y1="370" x2="480" y2="395" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Lane 4: P3 + P4 -->
+  <rect x="60" y="400" width="840" height="80" rx="8" fill="#1a3a6a" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
+  <text x="80" y="425" fill="#3b82f6" font-size="12" font-weight="700">P3 实现 + P4 验证</text>
+
+  <rect x="80" y="440" width="200" height="35" rx="4" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="180" y="462" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">✅ src/ 源码 12 文件</text>
+
+  <rect x="320" y="440" width="200" height="35" rx="4" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+  <text x="420" y="462" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">✨ npm test 全绿</text>
+</svg>

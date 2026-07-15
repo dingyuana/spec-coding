@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#grid)" opacity="0.3"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+  <text x="480" y="40" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">三层约束模型</text>
+
+  <!-- Outer layer: 命名 -->
+  <rect x="80" y="80" width="800" height="420" rx="16" fill="#0a1628" fill-opacity="0.2" stroke="#1a3a6a" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="110" y="110" fill="#1a3a6a" font-size="12" font-weight="600">第一层：命名规范</text>
+  <text x="480" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">camelCase / PascalCase / UPPER_SNAKE_CASE</text>
+
+  <!-- Middle layer: 架构 -->
+  <rect x="140" y="130" width="680" height="320" rx="14" fill="#0a1628" fill-opacity="0.3" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="170" y="158" fill="#3b82f6" font-size="12" font-weight="600">第二层：架构规范</text>
+
+  <!-- Architecture flow -->
+  <rect x="180" y="180" width="120" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="240" y="205" fill="#60a5fa" font-size="10" font-weight="600" text-anchor="middle">routes</text>
+  <line x1="300" y1="200" x2="330" y2="200" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/></marker>
+  <rect x="340" y="180" width="120" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="400" y="205" fill="#60a5fa" font-size="10" font-weight="600" text-anchor="middle">controllers</text>
+  <line x1="460" y1="200" x2="490" y2="200" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="500" y="180" width="120" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="560" y="205" fill="#60a5fa" font-size="10" font-weight="600" text-anchor="middle">services</text>
+  <line x1="620" y1="200" x2="650" y2="200" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="660" y="180" width="120" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="720" y="205" fill="#60a5fa" font-size="10" font-weight="600" text-anchor="middle">models</text>
+
+  <text x="480" y="250" fill="#3b82f6" font-size="10" text-anchor="middle">单向依赖，禁止逆流</text>
+
+  <!-- Inner core: 安全 -->
+  <rect x="200" y="280" width="560" height="140" rx="12" fill="#0f172a" stroke="#22d3ee" stroke-width="2" filter="url(#glow)"/>
+  <rect x="200" y="280" width="560" height="28" rx="12" fill="#22d3ee" fill-opacity="0.15"/>
+  <text x="480" y="300" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle">第三层（核心）：安全规则</text>
+
+  <text x="480" y="335" fill="#fca5a5" font-size="11" text-anchor="middle">❌ 禁止密码明文存储（必须 bcrypt）</text>
+  <text x="480" y="358" fill="#fca5a5" font-size="11" text-anchor="middle">❌ 禁止 JWT 密钥硬编码（必须从 .env 读取）</text>
+  <text x="480" y="381" fill="#fca5a5" font-size="11" text-anchor="middle">❌ 禁止登录泄露"用户不存在"与"密码错误"的区别</text>
+  <text x="480" y="404" fill="#fca5a5" font-size="11" text-anchor="middle">❌ 禁止 catch 后吞异常</text>
+
+  <text x="480" y="470" fill="#22d3ee" font-size="10" text-anchor="middle" filter="url(#glow)">命名 → 架构 → 安全，逐层收紧，核心不可妥协</text>
+</svg>

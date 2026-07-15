@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#grid)" opacity="0.3"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+  <text x="480" y="40" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">登录业务逻辑流程</text>
+
+  <rect x="100" y="100" width="200" height="70" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+  <text x="200" y="128" fill="#3b82f6" font-size="12" font-weight="700" text-anchor="middle">① 查用户</text>
+  <text x="200" y="148" fill="#94a3b8" font-size="9" text-anchor="middle">UserModel.findByUsername</text>
+  <line x1="300" y1="135" x2="350" y2="135" stroke="#22d3ee" stroke-width="2"/>
+  <polygon points="345,130 355,135 345,140" fill="#22d3ee"/>
+
+  <rect x="360" y="100" width="200" height="70" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+  <text x="460" y="128" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle">② 验密码</text>
+  <text x="460" y="148" fill="#94a3b8" font-size="9" text-anchor="middle">verifyPassword</text>
+  <line x1="560" y1="135" x2="610" y2="135" stroke="#22d3ee" stroke-width="2"/>
+  <polygon points="605,130 615,135 605,140" fill="#22d3ee"/>
+
+  <rect x="620" y="100" width="200" height="70" rx="8" fill="#0f172a" stroke="#60a5fa" stroke-width="2"/>
+  <text x="720" y="128" fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle">③ 签 JWT</text>
+  <text x="720" y="148" fill="#94a3b8" font-size="9" text-anchor="middle">signToken(user.id)</text>
+
+  <rect x="100" y="250" width="240" height="50" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="220" y="278" fill="#fca5a5" font-size="11" font-weight="600" text-anchor="middle">❌ 用户不存在 → 401</text>
+
+  <rect x="360" y="250" width="240" height="50" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="480" y="278" fill="#fca5a5" font-size="11" font-weight="600" text-anchor="middle">❌ 密码错误 → 401（相同）</text>
+
+  <rect x="620" y="250" width="240" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+  <text x="740" y="278" fill="#86efac" font-size="11" font-weight="600" text-anchor="middle">✅ 都通过 → 返回 token</text>
+
+  <text x="480" y="370" fill="#22d3ee" font-size="10" text-anchor="middle">3 个分支，全部被测试覆盖</text>
+  <text x="480" y="390" fill="#6b7280" font-size="9" text-anchor="middle">authService.test.js — 3 条测试 = 100% 分支覆盖</text>
+
+  <rect x="100" y="430" width="760" height="40" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="1"/>
+  <text x="480" y="455" fill="#94a3b8" font-size="10" text-anchor="middle">安全关键：用户不存在和密码错误的错误消息完全相同，防止枚举攻击</text>
+</svg>
