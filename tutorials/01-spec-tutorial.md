@@ -47,43 +47,202 @@
 
 SPEC 不是「记录」，它是**合同**。白纸黑字，写清楚每一种情况。不仅是「正常情况」，更重要的是那些**让你半夜起来修 Bug 的边界情况**。
 
-打开 `user-login/SPEC.md`，最核心的是**接口规范**：
+---
 
-```
-正常登录   → 200 { "token": "..." }
-密码错误   → 401 { "error": "用户名或密码错误" }
-用户不存在 → 401 { "error": "用户名或密码错误" }（和密码错误一样！不告诉你哪个错了！）
-参数缺失   → 400 { "error": "用户名和密码不能为空" }
-```
+## 四、本项目 SPEC.md 长什么样
 
-看到「用户不存在」和「密码错误」返回同一个错误信息了吗？这**不是笔误**——这是安全设计。你告诉攻击者「用户不存在」，等于给了他一本花名册。SPEC 把这种细节写死，防止任何人「拍脑袋改一下」。
+打开 `/root/spec-coding/SPEC.md`，最核心的是 **4 个 Scenario**——每个 Scenario 覆盖一条业务路径，包括正常路径和所有异常路径：
 
-SPEC 还定义了项目的 **5 个迭代**，每个迭代只实现一部分，步步为营：
-
-```
-Iter 1: 工具函数（errors + password + jwt）
-Iter 2: 数据模型 + 种子
-Iter 3: 服务层
-Iter 4: HTTP 接口
-Iter 5: 完整验证
-```
+```markdown
+# 用户登录模块 — SPEC（全局契约）
 
 ---
 
-## 四、SPEC 是可执行的文档——测试就是执法者
+## 一、Feature
+
+### Scenario 1: 正常登录
+- Given 数据库中存在用户 admin
+- When 用户提交正确的用户名和密码
+- Then 返回 200 和 JWT Token
+- And Token payload 包含 user_id
+
+### Scenario 2: 密码错误
+- Given 数据库中存在用户 admin
+- When 用户提交正确的用户名但错误的密码
+- Then 返回 401
+- And 响应体为 `{ "error": "用户名或密码错误" }`
+
+### Scenario 3: 用户不存在
+- Given 数据库中不存在用户 hacker
+- When 用户提交用户名 hacker
+- Then 返回 401
+- And 响应体为 `{ "error": "用户名或密码错误" }`（与 Scenario 2 一致）
+
+### Scenario 4: 参数缺失
+- Given 请求体缺少 username 或 password
+- When 用户提交不完整的登录请求
+- Then 返回 400
+- And 响应体为 `{ "error": "用户名和密码不能为空" }`
+```
+
+看到 Scenario 2 和 Scenario 3 返回**同一个错误信息**（`用户名或密码错误`）了吗？这**不是笔误**——这是安全设计。你告诉攻击者「用户不存在」，等于给了他一本花名册。SPEC 把这种细节写死，防止任何人「拍脑袋改一下」。
+
+---
+
+## 五、SPEC 中的迭代规划
+
+SPEC 不止定义接口契约，还定义了整个项目的**迭代路线**。每个迭代只实现 SPEC 的一部分：
+
+```
+### Iter 1 — 工具函数接口
+errors.js:     AppError(message, statusCode) + 预定义错误常量
+password.js:   hashPassword(plain) → hash / verifyPassword(plain, hash) → boolean
+jwt.js:        signToken(userId) → token / verifyToken(token) → payload
+
+### Iter 2 — 数据模型 + 配置
+config/index.js:  .env 读取（PORT, JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_ROUNDS）
+User 模型:        findByUsername / create / clear
+种子数据:         seedDatabase() — 预置 admin 用户
+
+### Iter 3 — 服务层
+authService.js: login({ username, password }) → { token }
+                用户不存在/密码错误 → throw Errors.INVALID_CREDENTIALS（同一错误）
+
+### Iter 4 — HTTP 接口
+POST /api/auth/login:
+  成功 200: { token }
+  参数缺失 400: { error: "用户名和密码不能为空" }
+  登录失败 401: { error: "用户名或密码错误" }
+  服务器错误 500: { error: "服务器内部错误" }
+```
+
+每个迭代的「验收标准」也写在 SPEC 里，共 11 条验收项，逐一对应测试：
+
+| # | 验收项 | 所在迭代 |
+|---|--------|---------|
+| 1 | AppError 正确构造 | Iter 1 |
+| 2 | bcrypt 哈希和验证 | Iter 1 |
+| 3 | JWT 签发和验证 | Iter 1 |
+| 4 | User 模型增删查 | Iter 2 |
+| 5 | 种子数据幂等性 | Iter 2 |
+| 6 | 登录业务逻辑正确 | Iter 3 |
+| 7 | 参数校验返回 400 | Iter 4 |
+| 8 | 密码错误返回 401 | Iter 4 |
+| 9 | 用户不存在返回 401 | Iter 4 |
+| 10 | 完整 HTTP 流程 | Iter 4 |
+| 11 | 全部 25 测试通过 | Iter 5 |
+
+---
+
+## 六、SPEC → 测试：每个 Scenario 都有一条真实的测试
 
 普通的文档写完了就躺在那，等着腐烂。SPEC 不一样。
 
-**SPEC 里每一条约定，最终都会变成一条测试用例。**
+**SPEC 里每一条约定，最终都会变成一条测试用例。** 让我们打开本项目真实的集成测试文件，看看每个 Scenario 是如何被翻译成测试的。
+
+以下是 `tests/integration/auth.test.js` 中的完整测试结构：
+
+### Scenario 1 → 正常登录
 
 ```javascript
-// SPEC 说：用户不存在返回 401
-it('用户不存在应返回 401', async () => {
-  const res = await request(app).post('/api/auth/login')
-    .send({ username: 'ghost', password: 'x' });
-  expect(res.status).toBe(401);
+// tests/integration/auth.test.js — Scenario 1
+describe('Scenario 1: 正常登录', () => {
+  it('admin 正确密码应返回 200 和 JWT token', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'admin123' });
+    expect(res.status).toBe(200);
+    expect(res.body.token).toBeDefined();
+    expect(res.body.token.split('.')).toHaveLength(3);  // JWT 是三段式
+  });
+
+  it('JWT payload 应包含 user_id', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'admin123' });
+    const decoded = jwt.verify(res.body.token, config.jwt.secret);
+    expect(decoded.user_id).toBe(1);
+  });
 });
 ```
+
+### Scenario 2 → 密码错误
+
+```javascript
+// tests/integration/auth.test.js — Scenario 2
+describe('Scenario 2: 密码错误', () => {
+  it('应返回 401 和错误消息', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'wrongpass' });
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('用户名或密码错误');
+  });
+});
+```
+
+### Scenario 3 → 用户不存在
+
+```javascript
+// tests/integration/auth.test.js — Scenario 3
+describe('Scenario 3: 用户不存在', () => {
+  it('应返回 401', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ username: 'hacker', password: 'x' });
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('用户名或密码错误');
+  });
+
+  // ⭐ 防枚举验证：错误消息与密码错误完全一致
+  it('错误消息与密码错误完全一致（防枚举）', async () => {
+    const [wrongPass, notFound] = await Promise.all([
+      request(app.callback()).post('/api/auth/login').send({ username: 'admin', password: 'wrong' }),
+      request(app.callback()).post('/api/auth/login').send({ username: 'ghost', password: 'x' }),
+    ]);
+    expect(wrongPass.body).toEqual(notFound.body);
+  });
+});
+```
+
+**第 66-72 行是整个测试文件中最关键的一条测试**。它同时发送"密码错误"和"用户不存在"两个请求，然后断言两者的响应体**完全一致**。只要有人把错误消息改成了不同的文案，这条测试就会亮红灯。
+
+### Scenario 4 → 参数缺失
+
+```javascript
+// tests/integration/auth.test.js — Scenario 4
+describe('Scenario 4: 参数缺失', () => {
+  it('缺少 username 应返回 400', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ password: 'admin123' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('用户名和密码不能为空');
+  });
+
+  it('缺少 password 应返回 400', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({ username: 'admin' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('用户名和密码不能为空');
+  });
+
+  it('两个字段都缺失应返回 400', async () => {
+    const res = await request(app.callback())
+      .post('/api/auth/login')
+      .send({});
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('用户名和密码不能为空');
+  });
+});
+```
+
+**4 个 Scenario，8 条测试，每条测试都是 SPEC 中一行契约的可执行版本。**
+
+---
+
+## 七、SPEC 是可执行的文档——测试就是执法者
 
 现在这条 401 不再是一个美好的愿望。**它是一条带有强制力的法律条文。**
 
@@ -99,7 +258,7 @@ it('用户不存在应返回 401', async () => {
 
 ---
 
-## 五、有 SPEC 和没 SPEC 的差距，不是一个 README 的距离
+## 八、有 SPEC 和没 SPEC 的差距，不是一个 README 的距离
 
 ![](imgs/01/02-with-vs-without-spec-comparison.svg)
 
@@ -114,7 +273,7 @@ it('用户不存在应返回 401', async () => {
 
 ---
 
-## 六、合同签好了，然后呢？
+## 九、合同签好了，然后呢？
 
 OK，合同有了，执法者（测试）也安排上了。
 
@@ -122,7 +281,7 @@ OK，合同有了，执法者（测试）也安排上了。
 
 这就是下一篇文章要做的事。
 
-> 🗺️ **下一篇：[02-PLAN.md——把任务排成地图。](PLAN.md)**
+> 🗺️ **下一篇：[02-PLAN.md——把任务排成地图。](./02-PLAN.md)**
 >
 > *先把路画清楚再开车，不然你以为自己在竞速，其实是在碰碰车场地里踩油门。*
 

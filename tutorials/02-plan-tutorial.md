@@ -18,7 +18,20 @@
 
 ---
 
-## 二、你以为在计划，其实只是在列清单
+## 二、为什么需要规划？从"大脑堆栈"到"任务地图"
+
+### 认知负担：你的大脑不是无限容量的
+
+人的工作记忆（Working Memory）大约只能同时容纳 **4 个信息块**。当你在一个中型项目中同时跟踪：
+
+- 当前要做什么（1 个块）
+- 还有哪些前置没做（3-5 个块）
+- 哪些已经做完了（2-3 个块）
+- 依赖关系对不对（3-4 个块）
+
+你的工作记忆已经溢出了。**多出来的任务被压进"大脑堆栈"——你隐约知道它们存在，但每次弹出都要花时间去回忆上下文。**
+
+### 任务依赖管理：为什么清单不够用？
 
 你振作起来，写下：
 
@@ -50,15 +63,25 @@
 
 ---
 
-## 三、所以换一种思路：写 PLAN
+## 三、本项目的 PLAN.md
 
-PLAN 不是文档，是**任务地图**。它告诉你三件事：
+打开 `user-login/PLAN.md`（文件路径：`/root/spec-coding/PLAN.md`），项目被清晰地拆成 **6 个迭代（Iter 0 ~ Iter 5）**，每个迭代内部有细粒度的任务拆解。
 
-1. **现在在哪** —— ✅ 标记了所有已完成步
-2. **下一步去哪** —— 第一个 ⬜ 就是你的即时目标
-3. **哪些路是通的** —— 依赖关系标注了哪些前置条件已就绪
+### 迭代规划总览
 
-打开 `user-login/PLAN.md`，项目被清晰地拆成 **6 个迭代**，像地铁线路图一样一目了然：
+```markdown
+# 用户登录模块 — PLAN
+
+## 迭代规划
+
+### Iter 0 — 工程基础（无代码）
+| 任务 | 产出 |
+|------|------|
+| SPEC.md | 全局 SPEC（定义所有迭代的范围） |
+| PLAN.md | 本文件 |
+| AGENT.md | 编码规范 |
+| package.json / .env / .gitignore | 脚手架 |
+```
 
 ```
 Iter 0: 工程基础（SPEC / PLAN / AGENT / 脚手架）
@@ -76,12 +99,81 @@ Iter 5: 完整验证（30 条测试全部通过）
 
 每个 Iter 内部还有更细的拆解，粒度小到你不需要"思考怎么做"，只需要"动手做"：
 
+```markdown
+### Iter 1 — 工具函数层（3 个文件）
+| 顺序 | 任务 | 说明 |
+|------|------|------|
+| 1.1 | SPEC: 工具函数 | 定义 errors / password / jwt 接口 |
+| 1.2 | 测试: `tests/unit/errors.test.js` | TDD RED |
+| 1.3 | 代码: `src/utils/errors.js` | GREEN |
+| 1.4 | 测试: `tests/unit/password.test.js` | TDD RED |
+| 1.5 | 代码: `src/utils/password.js` | GREEN |
+| 1.6 | 测试: `tests/unit/jwt.test.js` | TDD RED |
+| 1.7 | 代码: `src/utils/jwt.js` | GREEN |
 ```
-Iter 1 的步骤：
-1.1 写 errors.test.js → 写 errors.js → 绿了 ✅
-1.2 写 password.test.js → 写 password.js → 绿了 ✅
-1.3 写 jwt.test.js → 写 jwt.js → 绿了 ✅
+
+### 每个 Iter 对应的真实文件
+
+**Iter 0 — 工程基础**
+- `/root/spec-coding/SPEC.md` — 全局功能契约
+- `/root/spec-coding/PLAN.md` — 本文档
+- `/root/spec-coding/AGENT.md` — 编码规范门禁
+- `/root/spec-coding/package.json` — 依赖管理
+- `/root/spec-coding/.env` / `.env.example` / `.gitignore` — 脚手架
+
+**Iter 1 — 工具函数层**
+- `/root/spec-coding/src/utils/errors.js` — 自定义错误类
+- `/root/spec-coding/src/utils/password.js` — bcrypt 哈希
+- `/root/spec-coding/src/utils/jwt.js` — JWT 签发/验证
+- 测试文件: `tests/unit/errors.test.js`, `tests/unit/password.test.js`, `tests/unit/jwt.test.js`
+
+**Iter 2 — 数据模型 + 配置**
+- `/root/spec-coding/src/config/index.js` — 环境变量配置
+- `/root/spec-coding/src/models/user.js` — 用户模型
+- `/root/spec-coding/scripts/seed.js` — 种子数据
+- 测试文件: `tests/unit/userModel.test.js`
+
+**Iter 3 — 服务层**
+- `/root/spec-coding/src/services/authService.js` — 登录业务逻辑
+- 测试文件: `tests/unit/authService.test.js`
+
+**Iter 4 — HTTP 接口层**
+- `/root/spec-coding/src/middleware/errorHandler.js` — 全局异常处理
+- `/root/spec-coding/src/controllers/authController.js` — 控制器
+- `/root/spec-coding/src/routes/auth.js` — 路由
+- `/root/spec-coding/src/app.js` — 应用工厂
+- `/root/spec-coding/src/index.js` — 入口
+- 测试文件: `tests/integration/auth.test.js`
+
+**Iter 5 — 完整验证**
+- `npm test` 全部通过
+- 手动 curl 验证 4 个 Scenario
+
+### 依赖链图
+
+```plaintext
+Iter 0（工程基础）
+  ↓
+Iter 1（工具函数）→ 独立，无项目内依赖
+  ↓
+Iter 2（模型 + 配置）→ 依赖 Iter 1 的 errors/password
+  ↓
+Iter 3（服务层）→ 依赖 Iter 1+2
+  ↓
+Iter 4（控制层）→ 依赖 Iter 3
+  ↓
+Iter 5（验证）→ 依赖全部
 ```
+
+### 里程碑
+
+| 里程碑 | 定义 | 条件 |
+|--------|------|------|
+| M1 | 工具函数全绿 | Iter 1 完成 |
+| M2 | 用户模型 + 种子可用 | Iter 2 完成 |
+| M3 | 登录业务逻辑测试通过 | Iter 3 完成 |
+| M4 | HTTP 接口全部覆盖 | Iter 4 完成 |
+| M5 | 25 条测试全部通过 | ✅ 全部完成 |
 
 看到没有？**每一步都有明确的"完成定义"**——测试先写，实现后写，亮了绿灯才算完。依赖关系从 Iter 0 一路流到 Iter 5，不存在"做着做着发现前置没做"的情况。
 

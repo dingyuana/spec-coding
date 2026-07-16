@@ -68,9 +68,79 @@
 
 ---
 
-## 四、5 个迭代：从地基到封顶的故事
+## 四、项目实战：本项目真实结构
 
-这不是一个清单，这是一个项目从零到一的生长史。
+光讲理论不够。我们来看一个真实项目的文件树——这正是本教程配套的**用户登录模块**，一个基于 Koa + bcrypt + JWT 的完整认证系统。
+
+```
+user-login/                        ← 项目根目录
+├── SPEC.md                        ← 全局契约（4 个 Scenario）
+├── PLAN.md                        ← 迭代规划
+├── AGENT.md                       ← 编码规范
+├── package.json                   ← 项目配置
+├── .env                           ← 环境变量
+│
+├── src/                           ← 源码目录
+│   ├── config/index.js            ← 配置（.env 读取）
+│   ├── utils/
+│   │   ├── errors.js              ← AppError 类 + 预定义错误常量
+│   │   ├── password.js            ← bcrypt 密码哈希/验证
+│   │   └── jwt.js                 ← JWT 签发/验证
+│   ├── models/user.js             ← User 模型（Map 存储）
+│   ├── services/authService.js    ← 登录业务逻辑
+│   ├── controllers/authController.js  ← 参数校验 + 格式化
+│   ├── routes/auth.js             ← 路由映射
+│   ├── middleware/errorHandler.js  ← 全局异常处理
+│   ├── app.js                     ← 应用工厂
+│   └── index.js                   ← 入口（含种子数据）
+│
+├── scripts/seed.js                ← 种子脚本
+│
+└── tests/                         ← 测试目录
+    ├── unit/
+    │   ├── errors.test.js         ← 6 条测试
+    │   ├── password.test.js       ← 4 条测试
+    │   ├── jwt.test.js            ← 3 条测试
+    │   ├── userModel.test.js      ← 5 条测试
+    │   └── authService.test.js    ← 3 条测试（mock）
+    └── integration/
+        └── auth.test.js           ← 8 条测试（4 个 Scenario）
+```
+
+注意这个结构——**每个文件的名字都暗示了它的职责**。你不打开代码，光看文件名就能猜出"错误处理在哪"、"密码怎么加密"、"路由怎么配的"。这就是设计的力量。
+
+---
+
+## 五、验证一下：真实的 package.json
+
+```json
+// package.json（scripts 部分）
+{
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "jest --verbose",
+    "test:watch": "jest --watch"
+  }
+}
+```
+
+四个命令，清晰明了：
+
+| 命令 | 用途 |
+|------|------|
+| `npm start` | 生产环境启动 |
+| `npm run dev` | 开发模式（文件变化自动重启） |
+| `npm test` | 跑全部测试，带详细输出 |
+| `npm run test:watch` | 监听模式，改代码自动重跑 |
+
+---
+
+## 六、5 个迭代：从地基到封顶——每个 Iter 都标注了真实文件
+
+这不是一个清单，这是一个项目从零到一的生长史。**每个迭代后面标注了该迭代产出的真实文件路径。**
+
+---
 
 ### Iter 0：蓝图阶段（不写一行业务代码）
 
@@ -84,67 +154,317 @@
 
 最后搭 **脚手架**——项目结构、依赖安装、测试框架配置。**干净的地基，一堵墙都不砌。**
 
-📄 产出：SPEC / PLAN / AGENT / 脚手架
+📄 **产出文件：**
+- `SPEC.md` — 全局契约
+- `PLAN.md` — 迭代规划
+- `AGENT.md` — 编码规范
+- `package.json` — 项目配置
 
-### Iter 1：地基阶段——工具函数
+---
 
-独立的 3 个文件，13 条测试：
+### Iter 1：地基阶段——工具函数（3 个文件，13 条测试）
 
-- `utils/errors.js` —— 自定义错误类
-- `utils/password.js` —— 密码哈希与验证
-- `utils/jwt.js` —— Token 签发与验证
+独立的 3 个文件，**不依赖任何其他模块，独立可测。**
 
-先写测试，再写实现。每个文件跑通再进下一个。**这些函数不依赖任何其他模块，独立可测。**
+先写测试，再写实现。每个文件跑通再进下一个。
 
-📄 产出：3 个工具模块 + 13 条测试 ✅
+#### 1.1 错误类
 
-### Iter 2：骨架阶段——数据模型
+```javascript
+// src/utils/errors.js — Iter 1
+class AppError extends Error {
+  constructor(message, statusCode = 500) {
+    super(message);
+    this.name = 'AppError';
+    this.statusCode = statusCode;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
 
-建立用户模型和种子数据：
+const Errors = {
+  INVALID_CREDENTIALS: new AppError('用户名或密码错误', 401),
+  MISSING_PARAMS: (msg) => new AppError(msg, 400),
+  INTERNAL: new AppError('服务器内部错误', 500),
+};
 
-- `models/user.js` —— User Schema 定义、字段校验
-- `scripts/seed.js` —— 插入测试用户
+module.exports = { AppError, Errors };
+```
 
-模型定了，整个系统的数据结构就定了。**这是后续所有业务的基石。**
+**对应的测试**（`tests/unit/errors.test.js`，6 条测试）：
 
-📄 产出：用户模型 + 种子脚本
+```javascript
+// tests/unit/errors.test.js — Iter 1, TDD RED
+describe('AppError', () => {
+  it('应携带 message 和 statusCode', () => { /* ... */ });
+  it('默认 statusCode 应为 500', () => { /* ... */ });
+  it('应正确捕获堆栈', () => { /* ... */ });
+});
 
-### Iter 3：器官阶段——业务逻辑
+describe('Errors 预定义错误', () => {
+  it('INVALID_CREDENTIALS: 401 用户名或密码错误', () => { /* ... */ });
+  it('MISSING_PARAMS: 工厂函数应生成动态消息', () => { /* ... */ });
+  it('INTERNAL: 500 服务器内部错误', () => { /* ... */ });
+});
+```
 
-这是核心——登录、注册、鉴权的业务逻辑：
+#### 1.2 密码工具
 
-- `services/authService.js` —— 注册、登录、验证 Token
+```javascript
+// src/utils/password.js — Iter 1
+const bcrypt = require('bcryptjs');
 
-服务层不关心 HTTP 请求和响应，它只处理纯数据。**可单元测试、可替换、不耦合框架。**
+async function hashPassword(plainPassword) {
+  if (!plainPassword || plainPassword.length < 6) {
+    throw new Error('密码长度不能少于 6 位');
+  }
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(plainPassword, salt);
+}
 
-📄 产出：认证服务 + 核心业务测试
+async function verifyPassword(plainPassword, hashedPassword) {
+  return bcrypt.compare(plainPassword, hashedPassword);
+}
+```
 
-### Iter 4：表皮阶段——HTTP 接口
+**对应的测试**（`tests/unit/password.test.js`，4 条测试，mock bcrypt）。
 
-把业务逻辑暴露给外部世界：
+#### 1.3 JWT 工具
 
-- `controllers/` —— 解包请求、调用服务、格式化响应
-- `routes/` —— URL 路由定义
-- `middleware/` —— 鉴权中间件、错误处理中间件
-- `app.js` —— 组装一切
+```javascript
+// src/utils/jwt.js — Iter 1
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
-**HTTP 层是最薄的一层。** 它只负责转换格式，不负责业务决策。
+function signToken(userId) {
+  return jwt.sign({ user_id: userId }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
+}
 
-📄 产出：完整 HTTP 服务
+function verifyToken(token) {
+  return jwt.verify(token, config.jwt.secret);
+}
+```
+
+**对应的测试**（`tests/unit/jwt.test.js`，3 条测试，mock jsonwebtoken）。
+
+📄 **产出文件：** `src/utils/errors.js` + `src/utils/password.js` + `src/utils/jwt.js` + 13 条测试 ✅
+
+---
+
+### Iter 2：骨架阶段——数据模型（3 个文件）
+
+#### 2.1 配置模块
+
+```javascript
+// src/config/index.js — Iter 2
+const config = {
+  port: parseInt(process.env.PORT, 10) || 3000,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: parseInt(process.env.JWT_EXPIRES_IN, 10) || 86400,
+  },
+  bcrypt: {
+    rounds: parseInt(process.env.BCRYPT_ROUNDS, 10) || 10,
+  },
+};
+```
+
+#### 2.2 User 模型
+
+```javascript
+// src/models/user.js — Iter 2
+const users = new Map();
+let nextId = 1;
+
+const UserModel = {
+  findByUsername(username) {
+    return Array.from(users.values()).find((u) => u.username === username);
+  },
+  findById(id) { return users.get(id); },
+  create({ username, passwordHash }) {
+    const user = { id: nextId++, username, passwordHash, createdAt: new Date() };
+    users.set(user.id, user);
+    return user;
+  },
+  clear() { users.clear(); nextId = 1; },
+};
+```
+
+**对应的测试**（`tests/unit/userModel.test.js`，5 条测试，覆盖 create / findByUsername / findById / clear）。
+
+#### 2.3 种子脚本
+
+```javascript
+// scripts/seed.js — Iter 2
+async function seedDatabase() {
+  const existing = UserModel.findByUsername(SEED_USER.username);
+  if (existing) return existing;  // 幂等性
+  const passwordHash = await hashPassword(SEED_USER.password);
+  return UserModel.create({ username: SEED_USER.username, passwordHash });
+}
+// 种子数据：admin / admin123
+```
+
+📄 **产出文件：** `src/config/index.js` + `src/models/user.js` + `scripts/seed.js`
+
+---
+
+### Iter 3：器官阶段——业务逻辑（1 个文件）
+
+这是核心——登录业务逻辑。服务层不关心 HTTP 请求和响应，它只处理纯数据。**可单元测试、可替换、不耦合框架。**
+
+```javascript
+// src/services/authService.js — Iter 3
+const AuthService = {
+  async login({ username, password }) {
+    const user = UserModel.findByUsername(username);
+    if (!user) throw Errors.INVALID_CREDENTIALS;     // 用户不存在 → 401
+    const isValid = await verifyPassword(password, user.passwordHash);
+    if (!isValid) throw Errors.INVALID_CREDENTIALS;  // 密码错误 → 401（消息相同！防枚举）
+    const token = signToken(user.id);
+    return { token };
+  },
+};
+```
+
+注意第 4 行和第 6 行——**用户不存在和密码错误抛出的是同一个错误对象**。这意味着前端/攻击者无法区分"用户名不存在"和"密码错误"，这是安全设计。
+
+**对应的测试**（`tests/unit/authService.test.js`，3 条测试，mock 了 UserModel / password / jwt）：
+
+```javascript
+// tests/unit/authService.test.js — Iter 3, TDD RED
+// mock 三个依赖，只测业务逻辑
+
+it('用户名密码正确应返回 token', async () => { /* ... */ });
+it('密码错误应抛出 INVALID_CREDENTIALS', async () => { /* ... */ });
+it('用户不存在应抛出 INVALID_CREDENTIALS', async () => { /* ... */ });
+```
+
+📄 **产出文件：** `src/services/authService.js` + 3 条测试 ✅
+
+---
+
+### Iter 4：表皮阶段——HTTP 接口（5 个文件）
+
+把业务逻辑暴露给外部世界。**HTTP 层是最薄的一层。** 它只负责转换格式，不负责业务决策。
+
+#### 4.1 全局错误处理
+
+```javascript
+// src/middleware/errorHandler.js — Iter 4
+function errorHandler(err, ctx) {
+  if (err instanceof AppError) {
+    ctx.status = err.statusCode;
+    ctx.body = { error: err.message };
+    return;
+  }
+  ctx.status = 500;
+  ctx.body = { error: '服务器内部错误' };
+}
+```
+
+#### 4.2 控制器（参数校验）
+
+```javascript
+// src/controllers/authController.js — Iter 4
+const AuthController = {
+  async login(ctx) {
+    const { username, password } = ctx.request.body;
+    if (!username || !password) throw Errors.MISSING_PARAMS('用户名和密码不能为空');
+    const { token } = await AuthService.login({ username, password });
+    ctx.status = 200;
+    ctx.body = { token };
+  },
+};
+```
+
+#### 4.3 路由映射
+
+```javascript
+// src/routes/auth.js — Iter 4
+const router = new Router({ prefix: '/api/auth' });
+router.post('/login', AuthController.login);
+```
+
+#### 4.4 应用组装
+
+```javascript
+// src/app.js — Iter 4
+function createApp() {
+  const app = new Koa();
+  app.use(bodyParser());
+  app.use(async (ctx, next) => {
+    try { await next(); }
+    catch (err) { errorHandler(err, ctx); }
+  });
+  app.use(authRouter.routes());
+  return app;
+}
+```
+
+#### 4.5 入口
+
+```javascript
+// src/index.js — Iter 4
+async function main() {
+  await seedDatabase();
+  const app = createApp();
+  app.listen(config.port, () => {
+    console.log(`[server] http://localhost:${config.port}`);
+  });
+}
+```
+
+**集成测试**（`tests/integration/auth.test.js`，8 条测试，覆盖 4 个 Scenario）：
+
+```javascript
+// tests/integration/auth.test.js — Iter 4, TDD RED
+// Scenario 1: 正常登录
+it('admin 正确密码应返回 200 和 JWT token', async () => { /* ... */ });
+it('JWT payload 应包含 user_id', async () => { /* ... */ });
+
+// Scenario 2: 密码错误
+it('应返回 401 和错误消息', async () => { /* ... */ });
+
+// Scenario 3: 用户不存在
+it('应返回 401', async () => { /* ... */ });
+it('错误消息与密码错误完全一致（防枚举）', async () => { /* ... */ });
+
+// Scenario 4: 参数缺失
+it('缺少 username 应返回 400', async () => { /* ... */ });
+it('缺少 password 应返回 400', async () => { /* ... */ });
+it('两个字段都缺失应返回 400', async () => { /* ... */ });
+```
+
+📄 **产出文件：** `src/middleware/errorHandler.js` + `src/controllers/authController.js` + `src/routes/auth.js` + `src/app.js` + `src/index.js` + 8 条集成测试 ✅
+
+---
 
 ### Iter 5：交付前夜——完整验证
 
 ```bash
 $ npm test
+
+> user-login@1.0.0 test
+> jest --verbose
+
+PASS tests/unit/errors.test.js
+PASS tests/unit/password.test.js
+PASS tests/unit/jwt.test.js
+PASS tests/unit/userModel.test.js
+PASS tests/unit/authService.test.js
+PASS tests/integration/auth.test.js
+
 Test Suites: 6 passed, 6 total
 Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        3.053 s
 ```
 
 全部 30 条测试通过 ✅。不是大概能跑，**是有据可查地能跑。**
 
 ---
 
-## 五、每个 Iter 内的节奏：RED → GREEN → ✅
+## 七、每个 Iter 内的节奏：RED → GREEN → ✅
 
 每个迭代内部都遵循同样的节奏：
 
@@ -162,7 +482,7 @@ Tests:       30 passed, 30 total
 
 ---
 
-## 六、有规划和没规划——差距不是一点点
+## 八、有规划和没规划——差距不是一点点
 
 | 维度 | 你以前的做法（直觉式） | 用了 SDD+TDD 后 |
 |:-----|:---------------------|:----------------|
@@ -181,20 +501,20 @@ Tests:       30 passed, 30 total
 
 ---
 
-## 七、整个系列的路线图
+## 九、整个系列的路线图
 
 ```text
 Iter 0 → SPEC / PLAN / AGENT        ← 📘 你在这里
-Iter 1 → 工具函数（密码 + JWT + 错误）  
-Iter 2 → 数据模型 + 种子数据  
-Iter 3 → 服务层（登录业务逻辑）  
-Iter 4 → HTTP 接口（路由 + 控制器 + 中间件）  
+Iter 1 → 工具函数（密码 + JWT + 错误）
+Iter 2 → 数据模型 + 种子数据
+Iter 3 → 服务层（登录业务逻辑）
+Iter 4 → HTTP 接口（路由 + 控制器 + 中间件）
 Iter 5 → 完整验证，30 条全绿 ✅
 ```
 
 ---
 
-## 八、接下来的故事
+## 十、接下来的故事
 
 现在你脑子里应该有一个画面了——不是"怎么写代码"，而是"怎么设计代码"。
 
@@ -204,4 +524,4 @@ Iter 5 → 完整验证，30 条全绿 ✅
 
 ---
 
-*→ 继续阅读：[01-SPEC.md](./01-SPEC.md) —— 把需求翻译成不可辩驳的契约*
+*→ 继续阅读：[01-SPEC.md](./01-spec-tutorial.md) —— 把需求翻译成不可辩驳的契约*
