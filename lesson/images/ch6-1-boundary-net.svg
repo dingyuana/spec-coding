@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">边界测试：把异常"抓"进来</text>
+  <!-- Net metaphor -->
+  <path d="M100,80 Q400,60 700,80 L700,380 Q400,400 100,380 Z" fill="none" stroke="#4a90d9" stroke-width="2" stroke-dasharray="8,4"/>
+  <path d="M100,80 Q400,60 700,80" fill="none" stroke="#4a90d9" stroke-width="1"/>
+  <path d="M100,380 Q400,400 700,380" fill="none" stroke="#4a90d9" stroke-width="1"/>
+  <!-- Grid lines -->
+  <line x1="200" y1="75" x2="200" y2="385" stroke="#4a90d9" stroke-width="0.5" opacity="0.3"/>
+  <line x1="300" y1="70" x2="300" y2="390" stroke="#4a90d9" stroke-width="0.5" opacity="0.3"/>
+  <line x1="400" y1="65" x2="400" y2="395" stroke="#4a90d9" stroke-width="0.5" opacity="0.3"/>
+  <line x1="500" y1="70" x2="500" y2="390" stroke="#4a90d9" stroke-width="0.5" opacity="0.3"/>
+  <line x1="600" y1="75" x2="600" y2="385" stroke="#4a90d9" stroke-width="0.5" opacity="0.3"/>
+  <!-- Caught items -->
+  <g transform="translate(150, 120)">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#d9534f" opacity="0.9"/>
+    <text x="60" y="25" text-anchor="middle" font-size="12" fill="#fff">空值输入</text>
+  </g>
+  <g transform="translate(310, 160)">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#f0ad4e" opacity="0.9"/>
+    <text x="60" y="25" text-anchor="middle" font-size="12" fill="#fff">超长字符串</text>
+  </g>
+  <g transform="translate(500, 200)">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#d9534f" opacity="0.9"/>
+    <text x="60" y="25" text-anchor="middle" font-size="12" fill="#fff">特殊字符</text>
+  </g>
+  <g transform="translate(180, 250)">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#f0ad4e" opacity="0.9"/>
+    <text x="60" y="25" text-anchor="middle" font-size="12" fill="#fff">重复注册</text>
+  </g>
+  <g transform="translate(420, 290)">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#d9534f" opacity="0.9"/>
+    <text x="60" y="25" text-anchor="middle" font-size="12" fill="#fff">边界值</text>
+  </g>
+  <!-- Bottom note -->
+  <rect x="100" y="390" width="600" height="40" rx="8" fill="#d9534f" opacity="0.1"/>
+  <text x="400" y="415" text-anchor="middle" font-size="13" fill="#d9534f">一张"网"把所有边界和异常都抓进测试里，不让 Bug 漏出去</text>
+</svg>

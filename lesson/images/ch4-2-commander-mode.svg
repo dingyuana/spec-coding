@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f7f0"/>
+      <stop offset="100%" stop-color="#e8f4e8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="430" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">指挥官模式：人发指令，Agent 执行</text>
+  <!-- Human commander -->
+  <rect x="60" y="80" width="280" height="300" rx="16" fill="#fff" stroke="#4a90d9" stroke-width="2"/>
+  <circle cx="200" cy="140" r="30" fill="#e8f4fd"/>
+  <text x="200" y="148" text-anchor="middle" font-size="28">👤</text>
+  <text x="200" y="190" text-anchor="middle" font-size="16" font-weight="bold" fill="#4a90d9">指挥官（人）</text>
+  <text x="200" y="220" text-anchor="middle" font-size="12" fill="#666">定义 Spec.md</text>
+  <text x="200" y="245" text-anchor="middle" font-size="12" fill="#666">下发指令给 Agent</text>
+  <text x="200" y="270" text-anchor="middle" font-size="12" fill="#666">审查测试结果</text>
+  <text x="200" y="295" text-anchor="middle" font-size="12" fill="#666">审核最终代码</text>
+  <!-- Command arrow -->
+  <path d="M340,180 L420,180" stroke="#e6a817" stroke-width="3" marker-end="url(#arrow)"/>
+  <!-- Agent executor -->
+  <rect x="460" y="80" width="280" height="300" rx="16" fill="#fff" stroke="#5cb85c" stroke-width="2"/>
+  <circle cx="600" cy="140" r="30" fill="#eaf7ea"/>
+  <text x="600" y="148" text-anchor="middle" font-size="28">🤖</text>
+  <text x="600" y="190" text-anchor="middle" font-size="16" font-weight="bold" fill="#5cb85c">执行者（Agent）</text>
+  <text x="600" y="220" text-anchor="middle" font-size="12" fill="#666">读取 Spec.md</text>
+  <text x="600" y="245" text-anchor="middle" font-size="12" fill="#666">编写全部测试</text>
+  <text x="600" y="270" text-anchor="middle" font-size="12" fill="#666">运行 pytest</text>
+  <text x="600" y="295" text-anchor="middle" font-size="12" fill="#666">报告结果</text>
+  <!-- Bottom key point -->
+  <rect x="100" y="380" width="600" height="35" rx="8" fill="#5cb85c" opacity="0.1"/>
+  <text x="400" y="403" text-anchor="middle" font-size="13" fill="#449d44">一句话指令："Agent，读取 Spec.md，执行第二阶段，编写全部测试代码"</text>
+</svg>

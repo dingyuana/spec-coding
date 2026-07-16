@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f7ff"/>
+      <stop offset="100%" stop-color="#e8f4f8"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a90d9"/>
+      <stop offset="100%" stop-color="#357abd"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5cb85c"/>
+      <stop offset="100%" stop-color="#449d44"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">人 + AI 搭档协作模式</text>
+  <!-- Human side -->
+  <rect x="60" y="80" width="240" height="320" rx="16" fill="#fff" stroke="#4a90d9" stroke-width="2"/>
+  <circle cx="180" cy="150" r="40" fill="#e8f4fd" stroke="#4a90d9" stroke-width="2"/>
+  <text x="180" y="145" text-anchor="middle" font-size="28">👤</text>
+  <text x="180" y="170" text-anchor="middle" font-size="14" fill="#4a90d9" font-weight="bold">开发者</text>
+  <text x="180" y="200" text-anchor="middle" font-size="12" fill="#666">定义需求</text>
+  <text x="180" y="220" text-anchor="middle" font-size="12" fill="#666">编写 Spec</text>
+  <text x="180" y="240" text-anchor="middle" font-size="12" fill="#666">审核代码</text>
+  <text x="180" y="260" text-anchor="middle" font-size="12" fill="#666">审查结果</text>
+  <!-- Document in middle -->
+  <rect x="310" y="140" width="180" height="200" rx="8" fill="#fff" stroke="#e6a817" stroke-width="2"/>
+  <rect x="310" y="140" width="180" height="36" rx="8" fill="#e6a817"/>
+  <rect x="310" y="168" width="180" height="8" fill="#e6a817"/>
+  <text x="400" y="165" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">合 同</text>
+  <text x="400" y="195" text-anchor="middle" font-size="11" fill="#555">Spec.md</text>
+  <line x1="330" y1="210" x2="470" y2="210" stroke="#ddd" stroke-width="1"/>
+  <text x="400" y="230" text-anchor="middle" font-size="11" fill="#555">需求 1: 邮箱验证</text>
+  <text x="400" y="250" text-anchor="middle" font-size="11" fill="#555">需求 2: 密码规则</text>
+  <text x="400" y="270" text-anchor="middle" font-size="11" fill="#555">需求 3: 重复检查</text>
+  <text x="400" y="290" text-anchor="middle" font-size="11" fill="#555">需求 4: 错误返回</text>
+  <text x="400" y="310" text-anchor="middle" font-size="11" fill="#555">...</text>
+  <!-- AI side -->
+  <rect x="500" y="80" width="240" height="320" rx="16" fill="#fff" stroke="#5cb85c" stroke-width="2"/>
+  <circle cx="620" cy="150" r="40" fill="#eaf7ea" stroke="#5cb85c" stroke-width="2"/>
+  <text x="620" y="145" text-anchor="middle" font-size="28">🤖</text>
+  <text x="620" y="170" text-anchor="middle" font-size="14" fill="#5cb85c" font-weight="bold">AI 搭档</text>
+  <text x="620" y="200" text-anchor="middle" font-size="12" fill="#666">读取 Spec</text>
+  <text x="620" y="220" text-anchor="middle" font-size="12" fill="#666">编写测试</text>
+  <text x="620" y="240" text-anchor="middle" font-size="12" fill="#666">实现代码</text>
+  <text x="620" y="260" text-anchor="middle" font-size="12" fill="#666">重构优化</text>
+  <!-- Arrows between human and spec -->
+  <line x1="300" y1="200" x2="310" y2="200" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="490" y1="240" x2="500" y2="240" stroke="#5cb85c" stroke-width="2"/>
+  <!-- Arrows between spec and AI -->
+  <line x1="490" y1="200" x2="500" y2="200" stroke="#e6a817" stroke-width="2"/>
+  <!-- Bottom: key insight -->
+  <rect x="100" y="400" width="600" height="36" rx="8" fill="#e6a817" opacity="0.15"/>
+  <text x="400" y="424" text-anchor="middle" font-size="13" fill="#b8860b">核心：人写"合同"（Spec），AI 执行（测试+代码+重构）</text>
+</svg>

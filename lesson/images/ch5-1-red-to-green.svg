@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f7f0"/>
+      <stop offset="100%" stop-color="#e8f4e8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="460" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">测试从红变绿 — TDD Green 阶段</text>
+  <!-- Before: Red -->
+  <rect x="60" y="70" width="320" height="340" rx="12" fill="#fff" stroke="#d9534f" stroke-width="2"/>
+  <text x="220" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#d9534f">执行前：全部红色</text>
+  <g transform="translate(80, 120)">
+    <rect x="0" y="0" width="280" height="35" rx="6" fill="#fdecea"/>
+    <text x="140" y="23" text-anchor="middle" font-size="12" fill="#d9534f">✗ 15 个测试全部失败</text>
+  </g>
+  <g transform="translate(80, 165)">
+    <rect x="0" y="0" width="280" height="35" rx="6" fill="#fdecea"/>
+    <text x="140" y="23" text-anchor="middle" font-size="12" fill="#d9534f">✗ 没有实现代码</text>
+  </g>
+  <g transform="translate(80, 210)">
+    <rect x="0" y="0" width="280" height="35" rx="6" fill="#fdecea"/>
+    <text x="140" y="23" text-anchor="middle" font-size="12" fill="#d9534f">✗ 功能不可用</text>
+  </g>
+  <!-- Arrow in middle -->
+  <text x="420" y="240" text-anchor="middle" font-size="28" fill="#5cb85c">→</text>
+  <text x="420" y="270" text-anchor="middle" font-size="12" fill="#888">Agent 实现代码</text>
+  <!-- After: Green -->
+  <rect x="460" y="70" width="290" height="340" rx="12" fill="#fff" stroke="#5cb85c" stroke-width="2"/>
+  <text x="605" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#5cb85c">执行后：全部绿色</text>
+  <g transform="translate(480, 120)">
+    <rect x="0" y="0" width="250" height="35" rx="6" fill="#eaf7ea"/>
+    <text x="125" y="23" text-anchor="middle" font-size="12" fill="#5cb85c">✓ 15 个测试全部通过</text>
+  </g>
+  <g transform="translate(480, 165)">
+    <rect x="0" y="0" width="250" height="35" rx="6" fill="#eaf7ea"/>
+    <text x="125" y="23" text-anchor="middle" font-size="12" fill="#5cb85c">✓ 最小实现代码就绪</text>
+  </g>
+  <g transform="translate(480, 210)">
+    <rect x="0" y="0" width="250" height="35" rx="6" fill="#eaf7ea"/>
+    <text x="125" y="23" text-anchor="middle" font-size="12" fill="#5cb85c">✓ 功能满足 Spec</text>
+  </g>
+  <!-- Bottom principle -->
+  <rect x="100" y="360" width="600" height="55" rx="8" fill="#5cb85c" opacity="0.1"/>
+  <text x="400" y="382" text-anchor="middle" font-size="13" font-weight="bold" fill="#449d44">最小实现原则</text>
+  <text x="400" y="402" text-anchor="middle" font-size="12" fill="#666">只写刚好让测试通过的代码，不多一行。Agent 严格执行此原则</text>
+</svg>
