@@ -48,6 +48,8 @@ async login(ctx) {
 
 分工明确，各司其职。
 
+![](imgs/07/01-mock-isolation.svg)
+
 ---
 
 ## 三、Mock 测试：0.1 秒 vs 5 秒的分水岭
@@ -163,6 +165,8 @@ const AuthService = {
 ```
 
 **5 行代码，3 个分支：**
+
+![](imgs/07/02-login-flow.svg)
 
 | 条件 | 结果 |
 |------|------|

@@ -173,6 +173,8 @@ AGENT 第 13 行：禁止登录泄露用户是否存在
 
 现在站在 Iter 5 往回看——这 6 个迭代像不像你爬了 6 段台阶？
 
+![](imgs/09/01-iteration-timeline.svg)
+
 ### Iter 0 — 搭好工程底座
 
 **产出：** SPEC.md / PLAN.md / AGENT.md / package.json / .env / .gitignore
