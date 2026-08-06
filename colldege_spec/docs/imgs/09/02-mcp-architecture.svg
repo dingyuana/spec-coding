@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">MCP 客户端 — 连接 / 降级 / 重试</text>
+  <g>
+    <rect x="60" y="70" width="200" height="340" rx="12" fill="#0f172a" stroke="#3b82f6"/>
+    <text x="160" y="98" fill="#3b82f6" font-size="13" font-weight="700" text-anchor="middle">MCP Client</text>
+    <text x="80" y="135" fill="#94a3b8" font-size="11">class McpClient:</text>
+    <text x="80" y="155" fill="#94a3b8" font-size="11">  is_connected: bool</text>
+    <text x="80" y="185" fill="#94a3b8" font-size="11">connect()</text>
+    <text x="80" y="205" fill="#94a3b8" font-size="11">disconnect()</text>
+    <text x="80" y="235" fill="#94a3b8" font-size="11">search_nearby()</text>
+    <text x="80" y="255" fill="#94a3b8" font-size="11">calc_route()</text>
+    <text x="80" y="275" fill="#94a3b8" font-size="11">get_building_list()</text>
+    <text x="80" y="305" fill="#22c55e" font-size="11">_fallback_*</text>
+    <text x="80" y="325" fill="#22c55e" font-size="11">(降级数据)</text>
+    <text x="80" y="355" fill="#94a3b8" font-size="11">_do_connect()</text>
+    <text x="80" y="375" fill="#94a3b8" font-size="11">_do_search()</text>
+    <text x="80" y="395" fill="#94a3b8" font-size="11">_do_calc()</text>
+    <text x="80" y="415" fill="#94a3b8" font-size="11">_do_buildings()</text>
+  </g>
+  <text x="285" y="245" fill="#22d3ee" font-size="18">→</text>
+  <g>
+    <rect x="310" y="180" width="200" height="120" rx="12" fill="#0f172a" stroke="#22d3ee"/>
+    <text x="410" y="208" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">高德地图 API</text>
+    <text x="330" y="240" fill="#94a3b8" font-size="11">附近建筑搜索</text>
+    <text x="330" y="260" fill="#94a3b8" font-size="11">路线规划</text>
+    <text x="330" y="280" fill="#94a3b8" font-size="11">建筑列表</text>
+  </g>
+  <text x="535" y="245" fill="#22d3ee" font-size="18">→</text>
+  <g>
+    <rect x="560" y="180" width="200" height="120" rx="12" fill="#0f172a" stroke="#22c55e"/>
+    <text x="660" y="208" fill="#22c55e" font-size="13" font-weight="700" text-anchor="middle">返回值</text>
+    <text x="580" y="240" fill="#94a3b8" font-size="11">nearby: list[dict]</text>
+    <text x="580" y="260" fill="#94a3b8" font-size="11">route: dict</text>
+    <text x="580" y="280" fill="#94a3b8" font-size="11">buildings: list</text>
+  </g>
+  <text x="785" y="245" fill="#22d3ee" font-size="18">→</text>
+  <g>
+    <rect x="810" y="180" width="120" height="120" rx="12" fill="#0f172a" stroke="#a855f7"/>
+    <text x="870" y="208" fill="#a855f7" font-size="12" font-weight="700" text-anchor="middle">前端</text>
+    <text x="820" y="240" fill="#94a3b8" font-size="10">map</text>
+    <text x="820" y="258" fill="#94a3b8" font-size="10">miniapp</text>
+    <text x="820" y="290" fill="#94a3b8" font-size="10">vue</text>
+  </g>
+  <rect x="200" y="340" width="560" height="80" rx="10" fill="#2a1a4a" stroke="#a855f7"/>
+  <text x="480" y="365" fill="#a855f7" font-size="13" font-weight="700" text-anchor="middle">优雅降级 — MCP 连不上 ≠ 功能不可用</text>
+  <text x="480" y="390" fill="#94a3b8" font-size="11" text-anchor="middle">connect() = False → 自动调用 _fallback_* → 返回 mock 数据 → 系统照常运行</text>
+  <text x="480" y="410" fill="#94a3b8" font-size="11" text-anchor="middle">换地图服务商 → 只换 _do_* 实现 → 接口不变</text>
+</svg>

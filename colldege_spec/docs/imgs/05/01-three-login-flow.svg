@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="a" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#22d3ee"/></marker>
+  </defs>
+  <rect width="960" height="460" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">三端登录，一套 JWT</text>
+  <g>
+    <rect x="40" y="60" width="280" height="70" rx="10" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="180" y="85" fill="#22c55e" font-size="13" font-weight="700" text-anchor="middle">📱 学生端 (微信小程序)</text>
+    <text x="180" y="108" fill="#94a3b8" font-size="11" text-anchor="middle">微信 code → session_key</text>
+  </g>
+  <g>
+    <rect x="40" y="150" width="280" height="70" rx="10" fill="#1a2e4a" stroke="#3b82f6"/>
+    <text x="180" y="175" fill="#3b82f6" font-size="13" font-weight="700" text-anchor="middle">👨‍🏫 辅导员端 (Web)</text>
+    <text x="180" y="198" fill="#94a3b8" font-size="11" text-anchor="middle">用户名 + 密码 → SHA-256 哈希</text>
+  </g>
+  <g>
+    <rect x="40" y="240" width="280" height="70" rx="10" fill="#2a1a4a" stroke="#a855f7"/>
+    <text x="180" y="265" fill="#a855f7" font-size="13" font-weight="700" text-anchor="middle">🏫 管理端 (Web)</text>
+    <text x="180" y="288" fill="#94a3b8" font-size="11" text-anchor="middle">用户名 + 密码 → SHA-256 哈希</text>
+  </g>
+  <text x="340" y="105" fill="#22d3ee" font-size="18" text-anchor="middle">→</text>
+  <text x="340" y="200" fill="#22d3ee" font-size="18" text-anchor="middle">→</text>
+  <text x="340" y="290" fill="#22d3ee" font-size="18" text-anchor="middle">→</text>
+  <rect x="380" y="120" width="220" height="160" rx="12" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="490" y="150" fill="#22d3ee" font-size="14" font-weight="700" text-anchor="middle">JWT 签发</text>
+  <text x="400" y="185" fill="#94a3b8" font-size="11">{</text>
+  <text x="400" y="205" fill="#94a3b8" font-size="11">  "sub": "openid-xxx",</text>
+  <text x="400" y="225" fill="#94a3b8" font-size="11">  "role": "student|counselor|admin",</text>
+  <text x="400" y="245" fill="#94a3b8" font-size="11">  "class_name": "2026计算机1班",</text>
+  <text x="400" y="265" fill="#94a3b8" font-size="11">  "exp": 1234567890</text>
+  <text x="400" y="285" fill="#94a3b8" font-size="11">}</text>
+  <text x="620" y="205" fill="#22d3ee" font-size="18" text-anchor="middle">→</text>
+  <rect x="660" y="120" width="260" height="160" rx="12" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="790" y="150" fill="#22c55e" font-size="14" font-weight="700" text-anchor="middle">路由分发</text>
+  <text x="680" y="185" fill="#94a3b8" font-size="11">role == "student"</text>
+  <text x="680" y="205" fill="#22c55e" font-size="11">→ /student/*</text>
+  <text x="680" y="230" fill="#94a3b8" font-size="11">role == "counselor"</text>
+  <text x="680" y="250" fill="#22c55e" font-size="11">→ /counselor/*</text>
+  <text x="680" y="275" fill="#94a3b8" font-size="11">role == "admin"</text>
+  <text x="680" y="295" fill="#22c55e" font-size="11">→ /admin/*</text>
+  <rect x="120" y="400" width="720" height="44" rx="6" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="480" y="425" fill="#22c55e" font-size="13" font-weight="600" text-anchor="middle">同一个中间件 / 同一个解析逻辑 / 同一个 role 分发</text>
+</svg>

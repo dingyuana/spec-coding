@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="a" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#22d3ee"/></marker>
+  </defs>
+  <rect width="960" height="460" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">三端登录 — 入口差异，内核统一</text>
+  <g>
+    <rect x="50" y="70" width="270" height="320" rx="12" fill="#0f172a" stroke="#22c55e"/>
+    <text x="185" y="100" fill="#22c55e" font-size="13" font-weight="700" text-anchor="middle">📱 学生端</text>
+    <text x="70" y="135" fill="#94a3b8" font-size="11">① 微信小程序授权</text>
+    <text x="70" y="155" fill="#94a3b8" font-size="11">② wx.login() 取 code</text>
+    <text x="70" y="175" fill="#94a3b8" font-size="11">③ POST /auth/student</text>
+    <text x="70" y="195" fill="#94a3b8" font-size="11">   { "code": "wx_code" }</text>
+    <text x="70" y="220" fill="#94a3b8" font-size="11">④ 后端换 openid</text>
+    <text x="70" y="240" fill="#94a3b8" font-size="11">⑤ 签发 JWT</text>
+    <rect x="90" y="275" width="190" height="38" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="185" y="292" fill="#22c55e" font-size="10" text-anchor="middle">sub: "openid-xxx"</text>
+    <text x="185" y="307" fill="#22c55e" font-size="10" text-anchor="middle">role: "student"</text>
+  </g>
+  <g>
+    <rect x="345" y="70" width="270" height="320" rx="12" fill="#0f172a" stroke="#3b82f6"/>
+    <text x="480" y="100" fill="#3b82f6" font-size="13" font-weight="700" text-anchor="middle">👨‍🏫 辅导员端</text>
+    <text x="365" y="135" fill="#94a3b8" font-size="11">① Web 表单输入</text>
+    <text x="365" y="155" fill="#94a3b8" font-size="11">② 用户名 + 密码</text>
+    <text x="365" y="175" fill="#94a3b8" font-size="11">③ POST /auth/counselor</text>
+    <text x="365" y="195" fill="#94a3b8" font-size="11">   { "username":"c01",</text>
+    <text x="365" y="213" fill="#94a3b8" font-size="11">     "password":"***" }</text>
+    <text x="365" y="238" fill="#94a3b8" font-size="11">④ SHA-256 哈希验证</text>
+    <text x="365" y="258" fill="#94a3b8" font-size="11">⑤ 签发 JWT</text>
+    <rect x="385" y="293" width="190" height="48" rx="6" fill="#1a2e4a" stroke="#3b82f6"/>
+    <text x="480" y="310" fill="#3b82f6" font-size="10" text-anchor="middle">sub: "counselor01"</text>
+    <text x="480" y="325" fill="#3b82f6" font-size="10" text-anchor="middle">role: "counselor"</text>
+    <text x="480" y="340" fill="#3b82f6" font-size="10" text-anchor="middle">class_name: "2026计算机1班"</text>
+  </g>
+  <g>
+    <rect x="640" y="70" width="270" height="320" rx="12" fill="#0f172a" stroke="#a855f7"/>
+    <text x="775" y="100" fill="#a855f7" font-size="13" font-weight="700" text-anchor="middle">🏫 管理端</text>
+    <text x="660" y="135" fill="#94a3b8" font-size="11">① Web 表单输入</text>
+    <text x="660" y="155" fill="#94a3b8" font-size="11">② 用户名 + 密码</text>
+    <text x="660" y="175" fill="#94a3b8" font-size="11">③ POST /auth/admin</text>
+    <text x="660" y="195" fill="#94a3b8" font-size="11">   { "username":"admin",</text>
+    <text x="660" y="213" fill="#94a3b8" font-size="11">     "password":"***" }</text>
+    <text x="660" y="238" fill="#94a3b8" font-size="11">④ SHA-256 哈希验证</text>
+    <text x="660" y="258" fill="#94a3b8" font-size="11">⑤ 签发 JWT</text>
+    <rect x="680" y="275" width="190" height="38" rx="6" fill="#2a1a4a" stroke="#a855f7"/>
+    <text x="775" y="292" fill="#a855f7" font-size="10" text-anchor="middle">sub: "admin"</text>
+    <text x="775" y="307" fill="#a855f7" font-size="10" text-anchor="middle">role: "admin"</text>
+  </g>
+  <rect x="120" y="415" width="720" height="36" rx="6" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="480" y="437" fill="#22c55e" font-size="13" font-weight="600" text-anchor="middle">三种入口 → 同一个 create_access_token() → 同一个 decode_access_token() → 同一个 Depends()</text>
+</svg>

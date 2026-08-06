@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#22d3ee"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="460" fill="url(#bg)"/>
+  <text x="480" y="38" fill="#22d3ee" font-size="20" font-weight="700" text-anchor="middle" filter="url(#glow)">SDD + TDD 全流程</text>
+  <g>
+    <rect x="60" y="80" width="200" height="320" rx="12" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="160" y="105" fill="#3b82f6" font-size="13" font-weight="700" text-anchor="middle">SDD — 写契约</text>
+    <rect x="80" y="125" width="160" height="36" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="160" y="147" fill="#fff" font-size="11" text-anchor="middle">SPEC.md</text>
+    <rect x="80" y="170" width="160" height="36" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="160" y="192" fill="#fff" font-size="11" text-anchor="middle">specs/*.yaml</text>
+    <rect x="80" y="215" width="160" height="36" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="160" y="237" fill="#fff" font-size="11" text-anchor="middle">PLAN.md</text>
+    <rect x="80" y="260" width="160" height="36" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="160" y="282" fill="#fff" font-size="11" text-anchor="middle">AGENT.md</text>
+  </g>
+  <line x1="265" y1="240" x2="325" y2="240" stroke="#22d3ee" stroke-width="2" marker-end="url(#arr)"/>
+  <g>
+    <rect x="335" y="80" width="200" height="320" rx="12" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="435" y="105" fill="#ef4444" font-size="13" font-weight="700" text-anchor="middle">RED — 写测试</text>
+    <rect x="355" y="125" width="160" height="36" rx="6" fill="#3a1a1a" stroke="#ef4444"/>
+    <text x="435" y="147" fill="#fff" font-size="11" text-anchor="middle">test_xxx.py</text>
+    <rect x="355" y="170" width="160" height="36" rx="6" fill="#3a1a1a" stroke="#ef4444"/>
+    <text x="435" y="192" fill="#fff" font-size="11" text-anchor="middle">assert ...</text>
+    <rect x="355" y="215" width="160" height="36" rx="6" fill="#3a1a1a" stroke="#ef4444"/>
+    <text x="435" y="237" fill="#ef4444" font-size="11" text-anchor="middle">pytest → FAIL</text>
+  </g>
+  <line x1="540" y1="240" x2="600" y2="240" stroke="#22d3ee" stroke-width="2" marker-end="url(#arr)"/>
+  <g>
+    <rect x="610" y="80" width="200" height="320" rx="12" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="710" y="105" fill="#22c55e" font-size="13" font-weight="700" text-anchor="middle">GREEN — 写代码</text>
+    <rect x="630" y="125" width="160" height="36" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="710" y="147" fill="#fff" font-size="11" text-anchor="middle">models/</text>
+    <rect x="630" y="170" width="160" height="36" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="710" y="192" fill="#fff" font-size="11" text-anchor="middle">services/</text>
+    <rect x="630" y="215" width="160" height="36" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="710" y="237" fill="#fff" font-size="11" text-anchor="middle">schemas/</text>
+    <rect x="630" y="260" width="160" height="36" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="710" y="282" fill="#fff" font-size="11" text-anchor="middle">routers/</text>
+    <rect x="630" y="305" width="160" height="36" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="710" y="327" fill="#22c55e" font-size="11" text-anchor="middle">pytest → PASS ✅</text>
+  </g>
+  <rect x="200" y="420" width="560" height="30" rx="6" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e"/>
+  <text x="480" y="439" fill="#22c55e" font-size="12" text-anchor="middle">契约 → 测试 → 代码 → 全绿（每 Iter 重复）</text>
+</svg>

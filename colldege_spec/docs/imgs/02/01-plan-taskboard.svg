@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg)"/>
+  <text x="480" y="36" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">PLAN.md — 迭代任务看板</text>
+  <g font-size="11" font-weight="600">
+    <rect x="50" y="60" width="135" height="36" rx="6" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6"/>
+    <text x="117" y="83" fill="#3b82f6" text-anchor="middle">TO DO</text>
+    <rect x="200" y="60" width="135" height="36" rx="6" fill="#22d3ee" fill-opacity="0.2" stroke="#22d3ee"/>
+    <text x="267" y="83" fill="#22d3ee" text-anchor="middle">IN PROGRESS</text>
+    <rect x="350" y="60" width="135" height="36" rx="6" fill="#22c55e" fill-opacity="0.2" stroke="#22c55e"/>
+    <text x="417" y="83" fill="#22c55e" text-anchor="middle">DONE</text>
+    <rect x="520" y="60" width="135" height="36" rx="6" fill="#a855f7" fill-opacity="0.2" stroke="#a855f7"/>
+    <text x="587" y="83" fill="#a855f7" text-anchor="middle">VERIFIED</text>
+  </g>
+  <g>
+    <rect x="55" y="115" width="125" height="60" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="117" y="138" fill="#fff" font-size="10" text-anchor="middle">Iter 5</text>
+    <text x="117" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">地图 + MCP</text>
+    <rect x="55" y="185" width="125" height="60" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="117" y="208" fill="#fff" font-size="10" text-anchor="middle">Iter 6</text>
+    <text x="117" y="226" fill="#94a3b8" font-size="9" text-anchor="middle">集成验证</text>
+  </g>
+  <g>
+    <rect x="205" y="115" width="125" height="60" rx="6" fill="#1a2e4a" stroke="#22d3ee"/>
+    <text x="267" y="138" fill="#fff" font-size="10" text-anchor="middle">Iter 4</text>
+    <text x="267" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">管理端模块</text>
+  </g>
+  <g>
+    <rect x="355" y="115" width="125" height="60" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="417" y="138" fill="#22c55e" font-size="10" text-anchor="middle">Iter 0</text>
+    <text x="417" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">基础设施</text>
+    <rect x="355" y="185" width="125" height="60" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="417" y="208" fill="#22c55e" font-size="10" text-anchor="middle">Iter 1</text>
+    <text x="417" y="226" fill="#94a3b8" font-size="9" text-anchor="middle">认证模块</text>
+    <rect x="355" y="255" width="125" height="60" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="417" y="278" fill="#22c55e" font-size="10" text-anchor="middle">Iter 2</text>
+    <text x="417" y="296" fill="#94a3b8" font-size="9" text-anchor="middle">学生报到</text>
+    <rect x="355" y="325" width="125" height="60" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+    <text x="417" y="348" fill="#22c55e" font-size="10" text-anchor="middle">Iter 3</text>
+    <text x="417" y="366" fill="#94a3b8" font-size="9" text-anchor="middle">辅导员模块</text>
+  </g>
+  <g>
+    <rect x="525" y="115" width="125" height="60" rx="6" fill="#1a2a3a" stroke="#a855f7"/>
+    <text x="587" y="138" fill="#a855f7" font-size="10" text-anchor="middle">103 tests</text>
+    <text x="587" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">ALL GREEN ✅</text>
+    <rect x="525" y="185" width="125" height="60" rx="6" fill="#1a2a3a" stroke="#a855f7"/>
+    <text x="587" y="208" fill="#a855f7" font-size="10" text-anchor="middle">105 tests</text>
+    <text x="587" y="226" fill="#94a3b8" font-size="9" text-anchor="middle">written first</text>
+  </g>
+  <g>
+    <rect x="680" y="115" width="240" height="280" rx="10" fill="#0f172a" stroke="#22d3ee"/>
+    <text x="800" y="140" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle">每 Iter 交付</text>
+    <text x="700" y="175" fill="#94a3b8" font-size="10">tests/unit/test_xxx.py</text>
+    <text x="700" y="195" fill="#94a3b8" font-size="10">tests/integration/test_xxx.py</text>
+    <text x="700" y="215" fill="#94a3b8" font-size="10">src/models/*.py</text>
+    <text x="700" y="235" fill="#94a3b8" font-size="10">src/services/*.py</text>
+    <text x="700" y="255" fill="#94a3b8" font-size="10">src/schemas/*.py</text>
+    <text x="700" y="280" fill="#94a3b8" font-size="10">src/main.py（路由）</text>
+    <text x="700" y="310" fill="#22c55e" font-size="10" font-weight="600">→ pytest 全绿</text>
+  </g>
+  <rect x="80" y="420" width="800" height="40" rx="6" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="480" y="444" fill="#22c55e" font-size="13" font-weight="600" text-anchor="middle">SPEC 回答"做什么" / PLAN 回答"先做什么" / AGENT 回答"长什么样"</text>
+</svg>

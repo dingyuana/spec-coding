@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="500" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">分层边界 — 每层只管自己的事</text>
+  <g>
+    <rect x="60" y="70" width="840" height="70" rx="10" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="100" y="105" fill="#3b82f6" font-size="13" font-weight="700">routers/ 路由层</text>
+    <text x="300" y="100" fill="#94a3b8" font-size="10">Depends(auth) / Request / Response</text>
+    <text x="300" y="118" fill="#94a3b8" font-size="10">调用 service → 返回 Response</text>
+    <text x="600" y="100" fill="#94a3b8" font-size="10">✗ 不 import SQLAlchemy</text>
+    <text x="600" y="118" fill="#94a3b8" font-size="10">✗ 不写业务逻辑</text>
+  </g>
+  <g>
+    <rect x="60" y="160" width="840" height="70" rx="10" fill="#0f2a4a" stroke="#22d3ee"/>
+    <text x="100" y="195" fill="#22d3ee" font-size="13" font-weight="700">services/ 业务层</text>
+    <text x="300" y="190" fill="#94a3b8" font-size="10">db.query / db.add / db.commit</text>
+    <text x="300" y="208" fill="#94a3b8" font-size="10">raise AppException(status, msg)</text>
+    <text x="600" y="190" fill="#94a3b8" font-size="10">✗ 不 import FastAPI</text>
+    <text x="600" y="208" fill="#94a3b8" font-size="10">✗ 不碰 HTTP</text>
+  </g>
+  <g>
+    <rect x="60" y="250" width="840" height="70" rx="10" fill="#1a2a1a" stroke="#22c55e"/>
+    <text x="100" y="285" fill="#22c55e" font-size="13" font-weight="700">schemas/ 验证层</text>
+    <text x="300" y="280" fill="#94a3b8" font-size="10">Pydantic BaseModel / Field(...)</text>
+    <text x="300" y="298" fill="#94a3b8" font-size="10">pattern / min_length / 默认值</text>
+    <text x="600" y="280" fill="#94a3b8" font-size="10">✗ 不 import SQLAlchemy</text>
+    <text x="600" y="298" fill="#94a3b8" font-size="10">✗ 不碰数据库</text>
+  </g>
+  <g>
+    <rect x="60" y="340" width="840" height="70" rx="10" fill="#2a1a4a" stroke="#a855f7"/>
+    <text x="100" y="375" fill="#a855f7" font-size="13" font-weight="700">models/ 数据层</text>
+    <text x="300" y="370" fill="#94a3b8" font-size="10">class Student(Base):</text>
+    <text x="300" y="388" fill="#94a3b8" font-size="10">mapped_column / primary_key / unique</text>
+    <text x="600" y="370" fill="#94a3b8" font-size="10">✗ 不 import Pydantic</text>
+    <text x="600" y="388" fill="#94a3b8" font-size="10">✗ 不碰 HTTP</text>
+  </g>
+  <rect x="200" y="430" width="560" height="44" rx="6" fill="#ef4444" fill-opacity="0.1" stroke="#ef4444"/>
+  <text x="480" y="455" fill="#ef4444" font-size="12" font-weight="600" text-anchor="middle">边界被打破 = 测试写不动 / 代码不可复用 / 改一处崩三处</text>
+</svg>
