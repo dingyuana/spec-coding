@@ -1,0 +1,239 @@
+module: auth
+description: 双端认证 — 微信学生登录 + 管理员密码登录 + 辅导员密码登录
+version: "1.0.0"
+status: draft
+
+dependencies: []
+
+endpoints:
+  - method: POST
+    path: /auth/student
+    description: 微信小程序登录 — code 换 JWT token
+    request:
+      body:
+        - name: code
+          type: string
+          required: true
+          description: 微信 wx.login 返回的 code
+    response:
+      success:
+        status: 200
+        body:
+          - name: token
+            type: string
+            description: JWT Access Token
+          - name: expires_in
+            type: number
+            description: Token 有效期秒数（86400）
+      errors:
+        - code: INVALID_CODE
+          status: 401
+          message: 无效的 code
+          condition: 微信 code 无效或已过期
+
+  - method: POST
+    path: /auth/admin
+    description: 管理员登录 — 用户名密码换 JWT token
+    request:
+      body:
+        - name: username
+          type: string
+          required: true
+          description: 管理员用户名
+        - name: password
+          type: string
+          required: true
+          description: 管理员密码
+    response:
+      success:
+        status: 200
+        body:
+          - name: token
+            type: string
+            description: JWT Access Token
+          - name: expires_in
+            type: number
+            description: Token 有效期秒数（86400）
+
+  - method: POST
+    path: /auth/counselor
+    description: 辅导员登录 — 用户名密码换 JWT token
+    request:
+      body:
+        - name: username
+          type: string
+          required: true
+          description: 辅导员用户名
+        - name: password
+          type: string
+          required: true
+          description: 辅导员密码
+    response:
+      success:
+        status: 200
+        body:
+          - name: token
+            type: string
+            description: JWT Access Token
+          - name: expires_in
+            type: number
+            description: Token 有效期秒数（86400）
+      errors:
+        - code: INVALID_CREDENTIALS
+          status: 401
+          message: 用户名或密码错误
+          condition: 辅导员不存在或密码错误
+
+models:
+  - name: Admin
+    description: 管理员用户模型
+    fields:
+      - name: id
+        type: integer
+        required: true
+        description: 自增主键
+      - name: username
+        type: string
+        required: true
+        constraints: unique
+        description: 管理员用户名
+      - name: password_hash
+        type: string
+        required: true
+        description: bcrypt 加密后的密码哈希
+      - name: role
+        type: string
+        required: true
+        default: admin
+        description: 角色
+      - name: created_at
+        type: datetime
+        required: true
+        description: 创建时间
+    methods:
+      - name: find_by_username
+        description: 根据用户名查找管理员
+        params:
+          - name: username
+            type: string
+        returns: Admin | None
+
+  - name: Counselor
+    description: 辅导员用户模型
+    fields:
+      - name: id
+        type: integer
+        required: true
+        description: 自增主键
+      - name: username
+        type: string
+        required: true
+        constraints: unique
+        description: 辅导员用户名
+      - name: password_hash
+        type: string
+        required: true
+        description: bcrypt 加密后的密码哈希
+      - name: role
+        type: string
+        required: true
+        default: counselor
+        description: 角色
+      - name: name
+        type: string
+        required: true
+        description: 姓名
+      - name: college
+        type: string
+        required: true
+        description: 所属学院
+      - name: class_name
+        type: string
+        required: true
+        description: 负责班级
+      - name: created_at
+        type: datetime
+        required: true
+        description: 创建时间
+    methods:
+      - name: find_by_username
+        description: 根据用户名查找辅导员
+        params:
+          - name: username
+            type: string
+        returns: Counselor | None
+
+scenarios:
+  - id: AUTH-S1
+    description: 微信学生登录
+    given: 微信服务端配置正确，code 有效
+    when: 学生 POST /auth/student，body 含有效 code
+    then: 返回 200 和 JWT token
+    also: token payload 含 openid 和 role=student
+
+  - id: AUTH-S2
+    description: 微信 code 无效
+    given: 微信服务端配置正确
+    when: 学生 POST /auth/student，body 含无效 code
+    then: 返回 401
+
+  - id: AUTH-S3
+    description: 管理员登录成功
+    given: 数据库中存在管理员 admin，密码 admin123
+    when: 管理员 POST /auth/admin，提交正确用户名密码
+    then: 返回 200 和 JWT token
+    also: token payload 含 user_id 和 role=admin
+
+  - id: AUTH-S4
+    description: 管理员密码错误
+    given: 数据库中存在管理员 admin
+    when: 提交错误密码
+    then: 返回 401，消息为 用户名或密码错误
+
+  - id: AUTH-S5
+    description: 管理员不存在
+    given: 数据库中不存在该用户名
+    when: 提交不存在的用户名
+    then: 返回 401，消息与 AUTH-S4 一致
+
+  - id: AUTH-S6
+    description: 辅导员登录成功
+    given: 数据库中存在辅导员，class=2026计算机1班
+    when: 辅导员 POST /auth/counselor，提交正确用户名密码
+    then: 返回 200 和 JWT token
+    also: token payload 含 user_id、role=counselor、college、class_name
+
+  - id: AUTH-S7
+    description: 辅导员密码错误
+    given: 数据库中存在辅导员
+    when: 提交错误密码
+    then: 返回 401，消息为 用户名或密码错误
+
+  - id: AUTH-S8
+    description: 无效 token 访问受保护接口
+    given: 任何角色访问需要认证的接口
+    when: Authorization header 含无效 token
+    then: 返回 401
+
+edge_cases:
+  - description: 微信 code 超时或已被使用
+    expected: 返回 401
+  - description: 同一 code 连续提交两次
+    expected: 第二次返回 401
+
+security:
+  - rule: 密码以 bcrypt 加密存储，禁止明文
+    reason: 数据库泄露时密码仍可保护
+  - rule: session_key 不在数据库落盘，不在响应返回，不写日志
+    reason: 微信 session_key 泄露会导致用户 session 被劫持
+  - rule: JWT_SECRET 从 .env 读取，禁止硬编码
+    reason: 密钥泄露导致 token 可被伪造
+  - rule: 管理员/辅导员不存在和密码错误的错误消息必须相同
+    reason: 防止攻击者枚举有效账号
+  - rule: JWT token payload 必须含 role 字段
+    reason: 后端根据 role 判断权限
+
+non_goals:
+  - 不实现刷新 token（24h 后重新登录）
+  - 不实现登出接口（token 自然过期）
+  - 不实现学生注册（只通过微信授权登录）

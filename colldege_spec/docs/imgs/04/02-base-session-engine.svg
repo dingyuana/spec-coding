@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="440" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">数据库引擎架构</text>
+  <g>
+    <rect x="80" y="70" width="200" height="200" rx="12" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="180" y="98" fill="#3b82f6" font-size="13" font-weight="700" text-anchor="middle">database.py</text>
+    <text x="100" y="135" fill="#94a3b8" font-size="11">engine = create_engine(</text>
+    <text x="100" y="155" fill="#94a3b8" font-size="11">"sqlite:///")</text>
+    <text x="100" y="185" fill="#94a3b8" font-size="11">SessionLocal = sessionmaker(</text>
+    <text x="100" y="205" fill="#94a3b8" font-size="11">bind=engine)</text>
+    <text x="100" y="235" fill="#94a3b8" font-size="11">Base = declarative_base()</text>
+    <rect x="110" y="260" width="140" height="4" rx="2" fill="#3b82f6"/>
+  </g>
+  <g>
+    <rect x="380" y="70" width="200" height="200" rx="12" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="480" y="98" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">models/</text>
+    <text x="400" y="130" fill="#94a3b8" font-size="11">class Student(Base)</text>
+    <text x="400" y="150" fill="#94a3b8" font-size="11">class Counselor(Base)</text>
+    <text x="400" y="170" fill="#94a3b8" font-size="11">class Admin(Base)</text>
+    <text x="400" y="190" fill="#94a3b8" font-size="11">class AuditLog(Base)</text>
+    <text x="400" y="220" fill="#22d3ee" font-size="11">全部继承 Base</text>
+  </g>
+  <g>
+    <rect x="680" y="70" width="200" height="200" rx="12" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="780" y="98" fill="#22c55e" font-size="13" font-weight="700" text-anchor="middle">services + routes</text>
+    <text x="700" y="130" fill="#94a3b8" font-size="11">db = SessionLocal()</text>
+    <text x="700" y="150" fill="#94a3b8" font-size="11">db.query(Student)</text>
+    <text x="700" y="170" fill="#94a3b8" font-size="11">db.add(student)</text>
+    <text x="700" y="190" fill="#94a3b8" font-size="11">db.commit()</text>
+    <text x="700" y="220" fill="#22c55e" font-size="11">全部用 SessionLocal</text>
+  </g>
+  <text x="290" y="175" fill="#22d3ee" font-size="24" text-anchor="middle">→</text>
+  <text x="590" y="175" fill="#22d3ee" font-size="24" text-anchor="middle">→</text>
+  <rect x="120" y="320" width="720" height="70" rx="8" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="480" y="350" fill="#22c55e" font-size="13" font-weight="600" text-anchor="middle">engine + SessionLocal + Base — 项目唯一的数据访问入口</text>
+  <text x="480" y="375" fill="#94a3b8" font-size="11" text-anchor="middle">所有模型继承 Base / 所有路由用 SessionLocal / 所有 service 调 db</text>
+</svg>

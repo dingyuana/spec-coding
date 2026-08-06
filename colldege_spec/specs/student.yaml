@@ -1,0 +1,324 @@
+module: student
+description: 学生报到信息管理 — 提交/查询/修改报到信息（含扩展字段）
+version: "1.0.0"
+status: draft
+
+dependencies:
+  - module: auth
+    reason: 学生端接口需 JWT 认证（openid 识别身份）
+
+endpoints:
+  - method: POST
+    path: /student/registration
+    description: 提交报到信息（含扩展字段）
+    request:
+      body:
+        - name: name
+          type: string
+          required: true
+          description: 学生姓名
+        - name: student_id
+          type: string
+          required: true
+          description: 学号
+        - name: college
+          type: string
+          required: true
+          description: 学院
+        - name: class_name
+          type: string
+          required: true
+          description: 班级
+        - name: building
+          type: string
+          required: true
+          description: 宿舍楼栋
+        - name: phone
+          type: string
+          required: true
+          description: 联系电话（11 位手机号）
+        - name: id_number
+          type: string
+          required: true
+          description: 身份证号（18 位）
+        - name: emergency_contact
+          type: string
+          required: true
+          description: 紧急联系人姓名
+        - name: emergency_phone
+          type: string
+          required: true
+          description: 紧急联系电话
+        - name: health_info
+          type: string
+          required: false
+          description: 体检信息（可选）
+        - name: enrollment_date
+          type: string
+          required: true
+          description: 入学日期（YYYY-MM-DD）
+    response:
+      success:
+        status: 201
+        body:
+          - name: id
+            type: integer
+            description: 报到记录 ID
+          - name: status
+            type: string
+            description: 状态（SUBMITTED）
+      errors:
+        - code: DUPLICATE
+          status: 409
+          message: 已存在报到记录
+          condition: 该 openid 已提交过
+        - code: VALIDATION_ERROR
+          status: 422
+          message: 字段校验失败
+          condition: 必填字段缺失或格式错误（身份证非 18 位 / 手机非 11 位）
+
+  - method: GET
+    path: /student/registration
+    description: 查看自己的报到信息
+    response:
+      success:
+        status: 200
+        body:
+          - name: id
+            type: integer
+          - name: student_id
+            type: string
+          - name: name
+            type: string
+          - name: college
+            type: string
+          - name: class_name
+            type: string
+          - name: building
+            type: string
+          - name: phone
+            type: string
+          - name: status
+            type: string
+          - name: reject_reason
+            type: string
+            description: 驳回原因（仅 REJECTED 时有值）
+      errors:
+        - code: NOT_FOUND
+          status: 404
+          message: 未找到报到记录
+
+  - method: PUT
+    path: /student/registration
+    description: 修改报到信息（仅 REJECTED 状态允许）
+    request:
+      body:
+        - name: name
+          type: string
+          required: true
+        - name: student_id
+          type: string
+          required: true
+        - name: college
+          type: string
+          required: true
+        - name: class_name
+          type: string
+          required: true
+        - name: building
+          type: string
+          required: true
+        - name: phone
+          type: string
+          required: true
+        - name: id_number
+          type: string
+          required: true
+        - name: emergency_contact
+          type: string
+          required: true
+        - name: emergency_phone
+          type: string
+          required: true
+        - name: health_info
+          type: string
+          required: false
+        - name: enrollment_date
+          type: string
+          required: true
+    response:
+      success:
+        status: 200
+        body:
+          - name: status
+            type: string
+            description: 状态（SUBMITTED）
+      errors:
+        - code: FORBIDDEN
+          status: 403
+          message: 仅 REJECTED 状态允许修改
+
+models:
+  - name: Student
+    description: 学生报到记录模型（含扩展字段）
+    fields:
+      - name: id
+        type: integer
+        required: true
+        description: 自增主键
+      - name: openid
+        type: string
+        required: true
+        constraints: unique
+        description: 微信 openid
+      - name: student_id
+        type: string
+        required: true
+        constraints: unique, length 5-20
+        description: 学号
+      - name: name
+        type: string
+        required: true
+        constraints: length 2-50
+        description: 姓名
+      - name: college
+        type: string
+        required: true
+        description: 学院
+      - name: class_name
+        type: string
+        required: true
+        description: 班级
+      - name: building
+        type: string
+        required: true
+        description: 宿舍楼栋
+      - name: phone
+        type: string
+        required: true
+        constraints: "11 位手机号"
+        description: 联系电话
+      - name: id_number
+        type: string
+        required: true
+        constraints: "18 位身份证号"
+        description: 身份证号
+      - name: emergency_contact
+        type: string
+        required: true
+        description: 紧急联系人
+      - name: emergency_phone
+        type: string
+        required: true
+        description: 紧急联系电话
+      - name: health_info
+        type: string
+        required: false
+        description: 体检信息
+      - name: enrollment_date
+        type: date
+        required: true
+        description: 入学日期
+      - name: status
+        type: enum
+        required: true
+        constraints: PENDING / SUBMITTED / APPROVED / REJECTED
+        default: PENDING
+        description: 报到状态
+      - name: reject_reason
+        type: string
+        required: false
+        description: 驳回原因
+      - name: created_at
+        type: datetime
+        required: true
+        description: 创建时间
+      - name: updated_at
+        type: datetime
+        required: true
+        description: 更新时间
+    methods:
+      - name: create_registration
+        description: 创建报到记录
+        params:
+          - name: schema
+            type: object
+          - name: openid
+            type: string
+        returns: Student
+      - name: get_by_openid
+        description: 根据 openid 查询
+        params:
+          - name: openid
+            type: string
+        returns: Student | None
+      - name: update_registration
+        description: 更新报到信息（仅 REJECTED 状态）
+        params:
+          - name: schema
+            type: object
+          - name: openid
+            type: string
+        returns: Student
+
+scenarios:
+  - id: STU-S1
+    description: 学生首次提交完整报到信息
+    given: 学生已登录
+    when: POST 提交含扩展字段的完整报到信息
+    then: 返回 201 和 SUBMITTED
+    also: 数据库中新建记录，所有扩展字段已存入
+
+  - id: STU-S2
+    description: 重复提交
+    given: 学生已提交过
+    when: 再次 POST
+    then: 返回 409
+
+  - id: STU-S3
+    description: 字段缺失或格式错误
+    given: 学生已登录
+    when: POST 身份证非 18 位
+    then: 返回 422
+
+  - id: STU-S4
+    description: 查看报到信息
+    given: 学生已提交
+    when: GET
+    then: 返回 200 含所有字段
+
+  - id: STU-S5
+    description: 未提交时查看
+    given: 学生未提交
+    when: GET
+    then: 返回 404
+
+  - id: STU-S6
+    description: 驳回后修改
+    given: 状态为 REJECTED
+    when: PUT 修改
+    then: 返回 200，状态变为 SUBMITTED
+
+  - id: STU-S7
+    description: 已提交状态不允许修改
+    given: 状态为 SUBMITTED
+    when: PUT
+    then: 返回 403
+
+edge_cases:
+  - description: 身份证号含 X（末位大写）
+    expected: 接受，视为合法 18 位
+  - description: 体检信息字段超长（> 500 字符）
+    expected: 截断或返回 422
+
+security:
+  - rule: 所有接口必须经过 JWT 认证
+    reason: 防止非学生身份访问
+  - rule: 学生只能查询/修改自己的报到信息
+    reason: 防止越权访问他人数据
+  - rule: 身份证号不在 API 响应中明文返回给他人
+    reason: 隐私保护（仅自己可查看）
+
+non_goals:
+  - 不实现学生账号注册（微信登录）
+  - 不实现身份证号自动校验真伪（只校验格式）

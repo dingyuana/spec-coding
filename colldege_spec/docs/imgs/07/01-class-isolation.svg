@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="460" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">辅导员权限隔离 — 只能看本班</text>
+  <rect x="40" y="70" width="380" height="340" rx="12" fill="#0f172a" stroke="#3b82f6"/>
+  <text x="230" y="100" fill="#3b82f6" font-size="14" font-weight="700" text-anchor="middle">张辅导员 (JWT payload)</text>
+  <text x="60" y="135" fill="#94a3b8" font-size="11">sub: "counselor01"</text>
+  <text x="60" y="158" fill="#94a3b8" font-size="11">role: "counselor"</text>
+  <text x="60" y="181" fill="#22c55e" font-size="11">class_name: "2026计算机1班"</text>
+  <text x="60" y="204" fill="#94a3b8" font-size="11">college: "计算机学院"</text>
+  <rect x="60" y="240" width="340" height="44" rx="6" fill="#1a3a1a" stroke="#22c55e"/>
+  <text x="230" y="262" fill="#22c55e" font-size="11" text-anchor="middle">✅ 可查看 2026计算机1班</text>
+  <text x="230" y="278" fill="#22c55e" font-size="11" text-anchor="middle">✅ 可审核 2026计算机1班</text>
+  <rect x="60" y="295" width="340" height="44" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="230" y="317" fill="#ef4444" font-size="11" text-anchor="middle">❌ 2026计算机2班 → 403</text>
+  <text x="230" y="333" fill="#ef4444" font-size="11" text-anchor="middle">❌ 访问 /admin/* → 403</text>
+  <rect x="60" y="350" width="340" height="44" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="230" y="372" fill="#ef4444" font-size="11" text-anchor="middle">❌ 驳回不写原因 → 400</text>
+  <text x="230" y="388" fill="#ef4444" font-size="11" text-anchor="middle">❌ 审核已通过学生 → 409</text>
+  <rect x="460" y="70" width="460" height="340" rx="12" fill="#0f172a" stroke="#22d3ee"/>
+  <text x="690" y="100" fill="#22d3ee" font-size="14" font-weight="700" text-anchor="middle">audit_student() 审核逻辑</text>
+  <text x="480" y="140" fill="#94a3b8" font-size="11">def audit_student(db, sid, action, reason, counselor):</text>
+  <text x="480" y="165" fill="#94a3b8" font-size="11">  student = db.query(Student).get(sid)</text>
+  <text x="480" y="190" fill="#94a3b8" font-size="11">  # ① 班级隔离</text>
+  <text x="480" y="210" fill="#ef4444" font-size="11">  if student.class_name != counselor["class_name"]:</text>
+  <text x="480" y="230" fill="#ef4444" font-size="11">      raise AppException(403, "无权操作")</text>
+  <text x="480" y="255" fill="#94a3b8" font-size="11">  # ② 驳回必须写原因</text>
+  <text x="480" y="275" fill="#f59e0b" font-size="11">  if action == "REJECTED" and not reason:</text>
+  <text x="480" y="295" fill="#f59e0b" font-size="11">      raise AppException(400, "驳回需填写原因")</text>
+  <text x="480" y="320" fill="#94a3b8" font-size="11">  # ③ 更新状态 + 写日志</text>
+  <text x="480" y="340" fill="#22c55e" font-size="11">  student.status = action</text>
+  <text x="480" y="360" fill="#22c55e" font-size="11">  db.add(AuditLog(...))</text>
+  <text x="480" y="380" fill="#22c55e" font-size="11">  db.commit()</text>
+  <rect x="500" y="420" width="380" height="32" rx="6" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="690" y="440" fill="#22c55e" font-size="11" font-weight="600" text-anchor="middle">三行校验 = 越权 403 / 无原因 400 / 状态锁定 409</text>
+</svg>

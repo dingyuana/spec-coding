@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg)"/>
+  <text x="480" y="34" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">学生报到表单 — 14 个字段</text>
+  <rect x="80" y="60" width="400" height="390" rx="12" fill="#0f172a" stroke="#22d3ee"/>
+  <text x="280" y="88" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">RegistrationCreate (Pydantic)</text>
+  <g font-size="11" font-family="JetBrains Mono">
+    <text x="100" y="120" fill="#22c55e">name: str</text>
+    <text x="100" y="120" fill="#94a3b8" font-size="9" x="280">必填, 1-20字符</text>
+    <text x="100" y="145" fill="#22c55e">student_id: str</text>
+    <text x="100" y="145" fill="#94a3b8" font-size="9" x="280">6-12位, 唯一</text>
+    <text x="100" y="170" fill="#22c55e">college: str</text>
+    <text x="100" y="195" fill="#22c55e">class_name: str</text>
+    <text x="100" y="220" fill="#22c55e">building: str</text>
+    <text x="100" y="245" fill="#22c55e">phone: str</text>
+    <text x="100" y="245" fill="#94a3b8" font-size="9" x="280">pattern: ^\\d{11}$</text>
+    <text x="100" y="270" fill="#22c55e">id_number: str</text>
+    <text x="100" y="270" fill="#94a3b8" font-size="9" x="280">pattern: ^\\d{17}[\\dXx]$</text>
+    <text x="100" y="295" fill="#22c55e">emergency_contact: str</text>
+    <text x="100" y="320" fill="#22c55e">emergency_phone: str</text>
+    <text x="100" y="320" fill="#94a3b8" font-size="9" x="280">pattern: ^\\d{11}$</text>
+    <text x="100" y="345" fill="#22c55e">enrollment_date: str</text>
+    <text x="100" y="345" fill="#94a3b8" font-size="9" x="280">格式: YYYY-MM-DD</text>
+    <text x="100" y="370" fill="#22c55e">physical_exam: str</text>
+    <text x="100" y="395" fill="#22c55e">notes: str</text>
+  </g>
+  <rect x="520" y="60" width="380" height="390" rx="12" fill="#0f172a" stroke="#ef4444"/>
+  <text x="710" y="88" fill="#ef4444" font-size="13" font-weight="700" text-anchor="middle">Pydantic 自动拦截</text>
+  <rect x="540" y="110" width="340" height="50" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="560" y="130" fill="#ef4444" font-size="11">❌ 手机号 12 位</text>
+  <text x="560" y="148" fill="#94a3b8" font-size="10">→ 422 validation error</text>
+  <rect x="540" y="170" width="340" height="50" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="560" y="190" fill="#ef4444" font-size="11">❌ 身份证 15 位</text>
+  <text x="560" y="208" fill="#94a3b8" font-size="10">→ 422 validation error</text>
+  <rect x="540" y="230" width="340" height="50" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="560" y="250" fill="#ef4444" font-size="11">❌ 缺少必填字段</text>
+  <text x="560" y="268" fill="#94a3b8" font-size="10">→ 422 field required</text>
+  <rect x="540" y="290" width="340" height="50" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="560" y="310" fill="#ef4444" font-size="11">❌ 入学日期格式错</text>
+  <text x="560" y="328" fill="#94a3b8" font-size="10">→ 422 wrong format</text>
+  <rect x="540" y="350" width="340" height="50" rx="6" fill="#1a1a2e" stroke="#ef4444"/>
+  <text x="560" y="370" fill="#ef4444" font-size="11">❌ 学号已存在</text>
+  <text x="560" y="388" fill="#94a3b8" font-size="10">→ 409 conflict (Service 层)</text>
+  <rect x="620" y="425" width="180" height="36" rx="6" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+  <text x="710" y="448" fill="#22c55e" font-size="11" font-weight="600" text-anchor="middle">5 个字段有模式校验</text>
+</svg>

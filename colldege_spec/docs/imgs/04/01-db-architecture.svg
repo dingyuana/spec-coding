@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');text{font-family:'JetBrains Mono','Noto Sans SC',monospace;}</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0f1f3d"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg)"/>
+  <text x="480" y="36" fill="#22d3ee" font-size="19" font-weight="700" text-anchor="middle" filter="url(#glow)">Spec vs Plan vs Agent — 三个文件各管一摊</text>
+  <g>
+    <rect x="80" y="80" width="280" height="280" rx="12" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="220" y="108" fill="#3b82f6" font-size="14" font-weight="700" text-anchor="middle">SPEC.md</text>
+    <text x="220" y="128" fill="#94a3b8" font-size="10" text-anchor="middle">全局契约</text>
+    <text x="100" y="165" fill="#94a3b8" font-size="11">做什么？</text>
+    <text x="100" y="200" fill="#94a3b8" font-size="10">• 角色定义（学生/辅导员/管理员）</text>
+    <text x="100" y="225" fill="#94a3b8" font-size="10">• 模块清单（6 个模块）</text>
+    <text x="100" y="250" fill="#94a3b8" font-size="10">• 边界定义</text>
+    <text x="100" y="275" fill="#94a3b8" font-size="10">• 不可变</text>
+    <rect x="110" y="310" width="220" height="32" rx="6" fill="#1a3a6a" stroke="#3b82f6"/>
+    <text x="220" y="330" fill="#3b82f6" font-size="11" text-anchor="middle">"what" 文件</text>
+  </g>
+  <g>
+    <rect x="390" y="80" width="280" height="280" rx="12" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="530" y="108" fill="#22d3ee" font-size="14" font-weight="700" text-anchor="middle">PLAN.md</text>
+    <text x="530" y="128" fill="#94a3b8" font-size="10" text-anchor="middle">任务看板</text>
+    <text x="410" y="165" fill="#94a3b8" font-size="11">先做什么？</text>
+    <text x="410" y="200" fill="#94a3b8" font-size="10">• Iter 0-6 迭代划分</text>
+    <text x="410" y="225" fill="#94a3b8" font-size="10">• 每个 Iter 交付文件</text>
+    <text x="410" y="250" fill="#94a3b8" font-size="10">• 依赖顺序</text>
+    <text x="410" y="275" fill="#94a3b8" font-size="10">• 可调整</text>
+    <rect x="420" y="310" width="220" height="32" rx="6" fill="#1a2e4a" stroke="#22d3ee"/>
+    <text x="530" y="330" fill="#22d3ee" font-size="11" text-anchor="middle">"when" 文件</text>
+  </g>
+  <g>
+    <rect x="700" y="80" width="280" height="280" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+    <text x="840" y="108" fill="#a855f7" font-size="14" font-weight="700" text-anchor="middle">AGENT.md</text>
+    <text x="840" y="128" fill="#94a3b8" font-size="10" text-anchor="middle">编码规范</text>
+    <text x="720" y="165" fill="#94a3b8" font-size="11">长什么样？</text>
+    <text x="720" y="200" fill="#94a3b8" font-size="10">• 命名规范（snake_case）</text>
+    <text x="720" y="225" fill="#94a3b8" font-size="10">• 分层规范（models/svc/route）</text>
+    <text x="720" y="250" fill="#94a3b8" font-size="10">• 错误处理</text>
+    <text x="720" y="275" fill="#94a3b8" font-size="10">• Pydantic 使用</text>
+    <rect x="730" y="310" width="220" height="32" rx="6" fill="#2a1a4a" stroke="#a855f7"/>
+    <text x="840" y="330" fill="#a855f7" font-size="11" text-anchor="middle">"how" 文件</text>
+  </g>
+  <rect x="120" y="400" width="720" height="50" rx="8" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e"/>
+  <text x="480" y="420" fill="#22c55e" font-size="13" font-weight="600" text-anchor="middle">SPEC 定方向 / PLAN 排计划 / AGENT 保质量</text>
+  <text x="480" y="440" fill="#94a3b8" font-size="11" text-anchor="middle">三个文件各司其职，缺一不可</text>
+</svg>
