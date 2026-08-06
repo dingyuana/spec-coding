@@ -1,0 +1,264 @@
+module: admin
+description: 管理端模块 — 全局审核 + 导出 CSV + 看板统计 + 操作日志 + 辅导员管理
+version: "1.0.0"
+status: draft
+
+dependencies:
+  - module: auth
+    reason: 管理端接口需 JWT 认证（role=admin）
+  - module: student
+    reason: 管理端操作学生报到数据
+  - module: counselor
+    reason: 管理端管理辅导员
+
+endpoints:
+  - method: GET
+    path: /admin/students
+    description: 查看全局学生报到列表（分页 + 筛选）
+    request:
+      query:
+        - name: page
+          type: integer
+          required: false
+          description: 页码，默认 1
+        - name: size
+          type: integer
+          required: false
+          description: 每页数量，默认 20，最大 100
+        - name: status
+          type: string
+          required: false
+          description: 按状态筛选（SUBMITTED/APPROVED/REJECTED）
+        - name: college
+          type: string
+          required: false
+          description: 按学院筛选
+        - name: class_name
+          type: string
+          required: false
+          description: 按班级筛选
+    response:
+      success:
+        status: 200
+        body:
+          - name: items
+            type: array
+            description: 报到记录列表
+          - name: total
+            type: integer
+            description: 总记录数
+          - name: page
+            type: integer
+            description: 当前页
+          - name: size
+            type: integer
+            description: 每页数量
+
+  - method: POST
+    path: /admin/audit/{student_id}
+    description: 审核报到信息（全局）
+    request:
+      params:
+        - name: student_id
+          type: integer
+          required: true
+          description: 报到记录 ID
+      body:
+        - name: action
+          type: string
+          required: true
+          description: APPROVED 或 REJECTED
+        - name: reason
+          type: string
+          required: false
+          description: 驳回原因（REJECTED 时必填）
+    response:
+      success:
+        status: 200
+        body:
+          - name: id
+            type: integer
+          - name: status
+            type: string
+      errors:
+        - code: NOT_FOUND
+          status: 404
+          message: 未找到报到记录
+        - code: INVALID_ACTION
+          status: 400
+          message: 无效的审核动作
+        - code: MISSING_REASON
+          status: 400
+          message: 驳回时必须填写原因
+    logging:
+      - action: approve
+        detail: 管理员 {username} 审核通过学生 {student_id}
+      - action: reject
+        detail: 管理员 {username} 驳回学生 {student_id}，原因：{reason}
+
+  - method: GET
+    path: /admin/export
+    description: 导出报到数据为 CSV
+    response:
+      success:
+        status: 200
+        body:
+          - name: content-disposition
+            type: string
+            description: attachment; filename=report.csv
+    logging:
+      - action: export
+        detail: 管理员 {username} 导出报到数据
+
+  - method: GET
+    path: /admin/dashboard
+    description: 全局看板统计
+    response:
+      success:
+        status: 200
+        body:
+          - name: today_count
+            type: integer
+            description: 今日新增报到数
+          - name: total_count
+            type: integer
+            description: 总报到数
+          - name: by_status
+            type: object
+            description: 各状态计数
+          - name: by_college
+            type: object
+            description: 各学院计数
+
+  - method: GET
+    path: /admin/logs
+    description: 操作日志
+    request:
+      query:
+        - name: page
+          type: integer
+          required: false
+          description: 页码
+        - name: size
+          type: integer
+          required: false
+          description: 每页数量
+        - name: actor_type
+          type: string
+          required: false
+          description: 按操作人类型筛选（admin/counselor）
+        - name: action
+          type: string
+          required: false
+          description: 按操作类型筛选（approve/reject/export/view）
+    response:
+      success:
+        status: 200
+        body:
+          - name: items
+            type: array
+            description: 操作日志列表
+          - name: total
+            type: integer
+            description: 总日志数
+
+  - method: POST
+    path: /admin/counselors
+    description: 添加辅导员
+    request:
+      body:
+        - name: username
+          type: string
+          required: true
+        - name: password
+          type: string
+          required: true
+        - name: name
+          type: string
+          required: true
+          description: 辅导员姓名
+        - name: college
+          type: string
+          required: true
+          description: 所属学院
+        - name: class_name
+          type: string
+          required: true
+          description: 负责班级
+    response:
+      success:
+        status: 201
+        body:
+          - name: id
+            type: integer
+            description: 辅导员 ID
+
+scenarios:
+  - id: ADM-S1
+    description: 管理员查看全局列表
+    given: 管理员已登录
+    when: GET /admin/students
+    then: 返回所有学生的报到记录（不分班级）
+
+  - id: ADM-S2
+    description: 按学院+班级筛选
+    given: 管理员已登录
+    when: GET /admin/students?college=计算机学院&class_name=2026计算机1班
+    then: 只返回指定学院班级的记录
+
+  - id: ADM-S3
+    description: 管理员审核通过
+    given: 存在 SUBMITTED 状态学生
+    when: POST /admin/audit/{id}, action=APPROVED
+    then: 状态变为 APPROVED，记录到 AuditLog
+    also: 操作日志含 action=approve
+
+  - id: ADM-S4
+    description: 管理员审核驳回
+    given: 存在 SUBMITTED 状态学生
+    when: POST /admin/audit/{id}, action=REJECTED, reason=学号格式错误
+    then: 状态变为 REJECTED，reject_reason 已记录
+    also: 操作日志含 action=reject
+
+  - id: ADM-S5
+    description: 驳回未填原因
+    given: 存在报到记录
+    when: POST /admin/audit/{id}, action=REJECTED，无 reason
+    then: 返回 400
+
+  - id: ADM-S6
+    description: 导出 CSV
+    given: 管理员已登录，数据库有数据
+    when: GET /admin/export
+    then: 返回 CSV 文件流，不含 password_hash
+
+  - id: ADM-S7
+    description: 全局看板
+    given: 管理员已登录
+    when: GET /admin/dashboard
+    then: 返回今日/总数/各状态/各学院
+
+  - id: ADM-S8
+    description: 操作日志
+    given: 管理员已登录，有多条操作记录
+    when: GET /admin/logs?action=approve
+    then: 返回 approve 类型的日志
+
+  - id: ADM-S9
+    description: 添加辅导员
+    given: 管理员已登录
+    when: POST /admin/counselors，提交完整信息
+    then: 返回 201，辅导员已创建
+
+security:
+  - rule: 所有接口必须经过 JWT 认证且 role=admin
+    reason: 防止辅导员/学生身份访问管理功能
+  - rule: 导出 CSV 不包含 password_hash 等敏感字段
+    reason: 数据泄露风险
+  - rule: 审核操作必须记录到 AuditLog
+    reason: 审计追溯
+
+non_goals:
+  - 不实现批量审核（逐条操作）
+  - 不实现 Excel 格式导出（仅 CSV）
+  - 不实现操作日志删除（只读）

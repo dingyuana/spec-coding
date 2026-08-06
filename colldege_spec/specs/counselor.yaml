@@ -1,0 +1,186 @@
+module: counselor
+description: 辅导员端 — 查看本班学生报到、审核、看板
+version: "1.0.0"
+status: draft
+
+dependencies:
+  - module: auth
+    reason: 辅导员接口需 JWT 认证（role=counselor）
+  - module: student
+    reason: 辅导员操作学生报到数据
+
+endpoints:
+  - method: POST
+    path: /auth/counselor
+    description: 辅导员登录
+    request:
+      body:
+        - name: username
+          type: string
+          required: true
+          description: 辅导员用户名
+        - name: password
+          type: string
+          required: true
+          description: 密码
+    response:
+      success:
+        status: 200
+        body:
+          - name: token
+            type: string
+            description: JWT Token
+          - name: expires_in
+            type: number
+            description: 有效期秒数
+
+  - method: GET
+    path: /counselor/students
+    description: 查看本班学生报到列表（分页）
+    request:
+      query:
+        - name: page
+          type: integer
+          required: false
+          description: 页码，默认 1
+        - name: size
+          type: integer
+          required: false
+          description: 每页数量，默认 20
+        - name: status
+          type: string
+          required: false
+          description: 按状态筛选
+    response:
+      success:
+        status: 200
+        body:
+          - name: items
+            type: array
+            description: 本班报到记录列表
+          - name: total
+            type: integer
+            description: 本班总记录数
+          - name: page
+            type: integer
+            description: 当前页
+          - name: size
+            type: integer
+            description: 每页数量
+      errors:
+        - code: FORBIDDEN
+          status: 403
+          message: 无权访问非本班学生
+          condition: 辅导员尝试访问其他班级
+
+  - method: POST
+    path: /counselor/audit/{student_id}
+    description: 审核本班学生
+    request:
+      params:
+        - name: student_id
+          type: integer
+          required: true
+          description: 报到记录 ID
+      body:
+        - name: action
+          type: string
+          required: true
+          description: APPROVED 或 REJECTED
+        - name: reason
+          type: string
+          required: false
+          description: 驳回原因（REJECTED 时必填）
+    response:
+      success:
+        status: 200
+        body:
+          - name: id
+            type: integer
+            description: 报到记录 ID
+          - name: status
+            type: string
+            description: 新状态
+      errors:
+        - code: FORBIDDEN
+          status: 403
+          message: 只能审核本班学生
+          condition: 学生不属于该辅导员班级
+
+  - method: GET
+    path: /counselor/dashboard
+    description: 本班看板统计
+    response:
+      success:
+        status: 200
+        body:
+          - name: class_name
+            type: string
+            description: 班级名称
+          - name: today_count
+            type: integer
+            description: 今日新增
+          - name: total_count
+            type: integer
+            description: 班级总报到数
+          - name: by_status
+            type: object
+            description: 各状态计数
+          - name: report_rate
+            type: number
+            description: 报到率（已报到/应报到）
+
+scenarios:
+  - id: COUN-S1
+    description: 辅导员登录
+    given: 数据库中存在辅导员，class=2026计算机1班
+    when: POST /auth/counselor，提交正确用户名密码
+    then: 返回 200 和 JWT token
+    also: payload 含 role=counselor, class_name=2026计算机1班
+
+  - id: COUN-S2
+    description: 辅导员查看本班列表
+    given: 辅导员已登录，class=2026计算机1班
+    when: GET /counselor/students
+    then: 只返回本班学生的报到记录
+
+  - id: COUN-S3
+    description: 辅导员审核本班通过
+    given: 本班存在 SUBMITTED 状态学生
+    when: POST /counselor/audit/{id}, action=APPROVED
+    then: 状态变为 APPROVED，记录到 AuditLog
+
+  - id: COUN-S4
+    description: 辅导员审核本班驳回
+    given: 本班存在 SUBMITTED 状态学生
+    when: POST /counselor/audit/{id}, action=REJECTED, reason=身份证格式错误
+    then: 状态变为 REJECTED，reject_reason 已记录
+
+  - id: COUN-S5
+    description: 辅导员越权访问其他班级
+    given: 辅导员 class=2026计算机1班
+    when: 尝试审核 2026计算机2班的学生
+    then: 返回 403
+
+  - id: COUN-S6
+    description: 辅导员看板
+    given: 辅导员已登录
+    when: GET /counselor/dashboard
+    then: 返回本班今日/总数/各状态/报到率
+
+edge_cases:
+  - description: 辅导员驳回时未填 reason
+    expected: 返回 400
+  - description: 学生已被管理员审核，辅导员再次审核
+    expected: 返回 400，状态已变更
+
+security:
+  - rule: 辅导员只能操作 class_name 匹配本班的学生
+    reason: 防止辅导员越权访问其他班级数据
+  - rule: 辅导员密码 bcrypt 加密
+    reason: 同管理员
+
+non_goals:
+  - 辅导员不能导出 CSV（仅管理员可导出）
+  - 辅导员不能查看操作日志（仅管理员）
+  - 辅导员不能管理其他辅导员

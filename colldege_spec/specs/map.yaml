@@ -1,0 +1,172 @@
+module: map
+description: 校园地图模块 — 高德 MCP 获取附近建筑 + 完整路线导航
+version: "1.0.0"
+status: draft
+
+dependencies:
+  - module: auth
+    reason: 地图接口需 JWT 认证
+  - module: mcp
+    reason: 通过 MCP 客户端连接高德地图服务
+
+endpoints:
+  - method: GET
+    path: /map/nearby
+    description: 获取校园附近建筑列表
+    request:
+      query:
+        - name: lat
+          type: number
+          required: true
+          description: 纬度
+        - name: lng
+          type: number
+          required: true
+          description: 经度
+        - name: radius
+          type: integer
+          required: false
+          description: 搜索半径米，默认 1000
+    response:
+      success:
+        status: 200
+        body:
+          - name: buildings
+            type: array
+            description: 建筑列表
+            items:
+              - name: name
+                type: string
+                description: 建筑名称
+              - name: lat
+                type: number
+                description: 纬度
+              - name: lng
+                type: number
+                description: 经度
+              - name: distance
+                type: integer
+                description: 距离米
+              - name: type
+                type: string
+                description: 建筑类型（食堂/教学楼/宿舍/图书馆/体育馆）
+
+  - method: GET
+    path: /map/route
+    description: 计算完整步行路线（校门→校园内目标）
+    request:
+      query:
+        - name: from_lat
+          type: number
+          required: true
+          description: 起点纬度
+        - name: from_lng
+          type: number
+          required: true
+          description: 起点经度
+        - name: to_lat
+          type: number
+          required: true
+          description: 终点纬度
+        - name: to_lng
+          type: number
+          required: true
+          description: 终点经度
+        - name: mode
+          type: string
+          required: false
+          description: 出行方式，默认 walking
+    response:
+      success:
+        status: 200
+        body:
+          - name: path
+            type: array
+            description: 路线坐标点数组
+            items:
+              - name: lat
+                type: number
+              - name: lng
+                type: number
+          - name: distance
+            type: integer
+            description: 距离米
+          - name: walking_time
+            type: integer
+            description: 步行时间分钟
+          - name: steps
+            type: array
+            description: 路线说明
+            items:
+              - name: instruction
+                type: string
+                description: 指引文字
+              - name: distance
+                type: integer
+                description: 段距离米
+          - name: from
+            type: object
+            description: 起点名称
+          - name: to
+            type: object
+            description: 终点名称
+
+  - method: GET
+    path: /map/buildings
+    description: 获取校园建筑列表（类型筛选）
+    request:
+      query:
+        - name: type
+          type: string
+          required: false
+          description: 建筑类型（食堂/教学楼/宿舍/图书馆/体育馆）
+    response:
+      success:
+        status: 200
+        body:
+          - name: buildings
+            type: array
+            description: 建筑列表
+            items:
+              - name: name
+                type: string
+              - name: lat
+                type: number
+              - name: lng
+                type: number
+              - name: type
+                type: string
+
+scenarios:
+  - id: MAP-S1
+    description: 获取附近建筑
+    given: 用户已登录
+    when: GET /map/nearby?lat=39.9&lng=116.4
+    then: 返回 200 和建筑列表（名称/坐标/距离）
+
+  - id: MAP-S2
+    description: 计算完整路线
+    given: 用户已登录
+    when: GET /map/route?from_lat=39.9&from_lng=116.4&to_lat=39.91&to_lng=116.41
+    then: 返回 200 含坐标点数组/距离/步行时间/路线说明
+
+  - id: MAP-S3
+    description: 获取校园建筑列表
+    given: 用户已登录
+    when: GET /map/buildings?type=食堂
+    then: 只返回食堂类建筑
+
+  - id: MAP-S4
+    description: 起点终点为校园建筑
+    given: 用户已登录
+    when: GET /map/route 从校门到食堂
+    then: 返回校内步行路径，含中文指引
+
+security:
+  - rule: 地图接口必须经过 JWT 认证
+    reason: 防止未授权调用
+
+non_goals:
+  - 不实现驾车/公交路线（仅步行）
+  - 不实现实时位置追踪
+  - 不实现高德 Key 动态申请（固定配置）

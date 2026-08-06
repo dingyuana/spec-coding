@@ -1,0 +1,85 @@
+# OpenSpec 模板 — 模块级契约
+# 纯 YAML 格式，禁止混入 Markdown 语法
+#
+# 使用方法：
+#   1. 复制此文件到 specs/<module-name>.yaml
+#   2. 填写下方所有字段
+#   3. 禁止在 YAML 值中使用 - **xxx:** 等 Markdown 符号
+
+module: "<module-name>"
+description: "<一句话描述该模块的职责>"
+version: "1.0.0"
+status: draft
+
+dependencies:
+  - module: "<module-name>"
+    reason: "<为什么依赖它>"
+
+endpoints:
+  - method: "<POST|GET|PUT|DELETE|PATCH>"
+    path: "</api/...>"
+    description: "<接口描述>"
+    request:
+      body:
+        - name: "<field>"
+          type: "<string|number|boolean|object|array>"
+          required: true
+          description: "<说明>"
+      params:
+        - name: "<field>"
+          type: "<string|number>"
+          required: true
+          description: "<说明>"
+      query:
+        - name: "<field>"
+          type: "<string|number>"
+          required: false
+          description: "<说明>"
+    response:
+      success:
+        status: 200
+        body:
+          - name: "<field>"
+            type: "<type>"
+            description: "<说明>"
+      errors:
+        - code: "<错误码>"
+          status: 400
+          message: "<错误消息>"
+          condition: "<触发条件>"
+
+models:
+  - name: "<ModelName>"
+    description: "<说明>"
+    fields:
+      - name: "<field>"
+        type: "<type>"
+        required: true
+        constraints: "<约束>"
+        description: "<说明>"
+    methods:
+      - name: "<method>"
+        description: "<说明>"
+        params:
+          - name: "<param>"
+            type: "<type>"
+        returns: "<返回值>"
+
+scenarios:
+  - id: "<S1>"
+    description: "<场景描述>"
+    given: "<前提条件>"
+    when: "<触发操作>"
+    then: "<预期结果>"
+    also: "<额外预期（可选）>"
+
+edge_cases:
+  - description: "<边界条件>"
+    expected: "<预期行为>"
+
+security:
+  - rule: "<规则>"
+    reason: "<原因>"
+
+non_goals:
+  - "<不做某事>"

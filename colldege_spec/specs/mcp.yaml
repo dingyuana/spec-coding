@@ -1,0 +1,94 @@
+module: mcp
+description: MCP 客户端封装 — 连接高德地图服务的 Model Context Protocol 客户端
+version: "1.0.0"
+status: draft
+
+dependencies: []
+
+endpoints: []
+
+models:
+  - name: McpClient
+    description: MCP 客户端，封装高德地图服务的 MCP 协议调用
+    fields: []
+    methods:
+      - name: connect
+        description: 连接高德 MCP 服务
+        params: []
+        returns: bool
+      - name: disconnect
+        description: 断开连接
+        params: []
+        returns: void
+      - name: search_nearby
+        description: 搜索附近 POI
+        params:
+          - name: lat
+            type: float
+          - name: lng
+            type: float
+          - name: radius
+            type: integer
+        returns: list of dict
+      - name: calc_route
+        description: 计算步行路线
+        params:
+          - name: from_lat
+            type: float
+          - name: from_lng
+            type: float
+          - name: to_lat
+            type: float
+          - name: to_lng
+            type: float
+        returns: dict
+      - name: get_building_list
+        description: 获取校园建筑列表
+        params:
+          - name: type
+            type: string
+        returns: list of dict
+
+scenarios:
+  - id: MCP-S1
+    description: MCP 客户端连接成功
+    given: 高德 MCP 服务可访问
+    when: 调用 connect()
+    then: 返回 True，客户端可用
+
+  - id: MCP-S2
+    description: MCP 服务不可用
+    given: 高德 MCP 服务不可达
+    when: 调用 connect()
+    then: 返回 False
+    also: 记录 WARNING 日志，不抛出异常
+
+  - id: MCP-S3
+    description: 搜索附近 POI
+    given: MCP 客户端已连接
+    when: 调用 search_nearby(lat, lng, 1000)
+    then: 返回 POI 列表（名称/坐标/类型）
+
+  - id: MCP-S4
+    description: 计算路线
+    given: MCP 客户端已连接
+    when: 调用 calc_route(from_lat, from_lng, to_lat, to_lng)
+    then: 返回路线数据（坐标点/距离/步行时间/步骤）
+
+  - id: MCP-S5
+    description: MCP 不可用优雅降级
+    given: MCP 客户端连接失败
+    when: 地图服务调用搜索/路线
+    then: 返回内置静态兜底数据
+    also: 不抛出异常，返回的响应结构一致
+
+security:
+  - rule: MCP 配置（endpoint/headers）从 .env 读取
+    reason: 防止敏感配置硬编码
+  - rule: MCP 调用必须有 30 秒超时
+    reason: 防止阻塞服务器
+
+non_goals:
+  - 不使用真实高德 MCP（教学阶段使用 mock）
+  - 不实现 MCP 连接池
+  - 不实现 MCP 心跳检测
