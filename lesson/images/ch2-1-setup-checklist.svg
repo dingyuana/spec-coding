@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f8f0"/>
+      <stop offset="100%" stop-color="#eef4e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">开发环境搭建清单</text>
+  <!-- Clipboard -->
+  <rect x="115" y="60" width="570" height="370" rx="12" fill="#fff" stroke="#ccc" stroke-width="2"/>
+  <rect x="115" y="60" width="570" height="40" rx="12" fill="#5cb85c"/>
+  <rect x="115" y="92" width="570" height="8" fill="#5cb85c"/>
+  <text x="400" y="87" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">环境就绪清单</text>
+  <!-- Items -->
+  <g transform="translate(160, 130)">
+    <rect x="0" y="0" width="50" height="50" rx="25" fill="#5cb85c"/>
+    <text x="25" y="33" text-anchor="middle" font-size="20" fill="#fff">✓</text>
+    <text x="75" y="22" font-size="15" fill="#333" font-weight="bold">Python 3.12+</text>
+    <text x="75" y="42" font-size="12" fill="#888">解释器已安装，可执行 python3 命令</text>
+  </g>
+  <g transform="translate(160, 200)">
+    <rect x="0" y="0" width="50" height="50" rx="25" fill="#5cb85c"/>
+    <text x="25" y="33" text-anchor="middle" font-size="20" fill="#fff">✓</text>
+    <text x="75" y="22" font-size="15" fill="#333" font-weight="bold">pytest</text>
+    <text x="75" y="42" font-size="12" fill="#888">测试框架已安装，可执行 pytest 命令</text>
+  </g>
+  <g transform="translate(160, 270)">
+    <rect x="0" y="0" width="50" height="50" rx="25" fill="#5cb85c"/>
+    <text x="25" y="33" text-anchor="middle" font-size="20" fill="#fff">✓</text>
+    <text x="75" y="22" font-size="15" fill="#333" font-weight="bold">requirements.txt</text>
+    <text x="75" y="42" font-size="12" fill="#888">依赖清单已创建，包含所有库</text>
+  </g>
+  <g transform="translate(160, 340)">
+    <rect x="0" y="0" width="50" height="50" rx="25" fill="#5cb85c"/>
+    <text x="25" y="33" text-anchor="middle" font-size="20" fill="#fff">✓</text>
+    <text x="75" y="22" font-size="15" fill="#333" font-weight="bold">Agent.md</text>
+    <text x="75" y="42" font-size="12" fill="#888">Agent 工作规则已配置</text>
+  </g>
+</svg>

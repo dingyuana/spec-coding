@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="430" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Agent 实现代码流程</text>
+  <!-- Step flow -->
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="640" height="55" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+    <circle cx="30" cy="27" r="16" fill="#4a90d9"/>
+    <text x="30" y="33" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">1</text>
+    <text x="60" y="33" font-size="14" font-weight="bold" fill="#333">读取 Spec 需求</text>
+    <text x="350" y="33" font-size="12" fill="#888">Agent 先理解"合同"中每条需求</text>
+  </g>
+  <g transform="translate(80, 150)">
+    <rect x="0" y="0" width="640" height="55" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+    <circle cx="30" cy="27" r="16" fill="#4a90d9"/>
+    <text x="30" y="33" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">2</text>
+    <text x="60" y="33" font-size="14" font-weight="bold" fill="#333">逐条实现测试</text>
+    <text x="350" y="33" font-size="12" fill="#888">按失败的测试顺序逐个实现</text>
+  </g>
+  <g transform="translate(80, 220)">
+    <rect x="0" y="0" width="640" height="55" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+    <circle cx="30" cy="27" r="16" fill="#4a90d9"/>
+    <text x="30" y="33" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">3</text>
+    <text x="60" y="33" font-size="14" font-weight="bold" fill="#333">运行 pytest 验证</text>
+    <text x="350" y="33" font-size="12" fill="#888">每实现一个功能就运行测试</text>
+  </g>
+  <g transform="translate(80, 290)">
+    <rect x="0" y="0" width="640" height="55" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+    <circle cx="30" cy="27" r="16" fill="#4a90d9"/>
+    <text x="30" y="33" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">4</text>
+    <text x="60" y="33" font-size="14" font-weight="bold" fill="#333">报告结果</text>
+    <text x="350" y="33" font-size="12" fill="#888">全部绿色 → 汇报完成</text>
+  </g>
+  <!-- Vertical arrows -->
+  <line x1="400" y1="135" x2="400" y2="150" stroke="#ccc" stroke-width="2"/>
+  <line x1="400" y1="205" x2="400" y2="220" stroke="#ccc" stroke-width="2"/>
+  <line x1="400" y1="275" x2="400" y2="290" stroke="#ccc" stroke-width="2"/>
+  <!-- Bottom note -->
+  <rect x="150" y="375" width="500" height="35" rx="8" fill="#4a90d9" opacity="0.1"/>
+  <text x="400" y="398" text-anchor="middle" font-size="13" fill="#4a90d9">Agent 不写多余的代码——只写刚好让测试通过的最小实现</text>
+</svg>

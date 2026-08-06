@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">方法论全景图 — 结课总结</text>
+  <!-- Three pillars -->
+  <rect x="60" y="75" width="200" height="160" rx="12" fill="#4a90d9"/>
+  <text x="160" y="115" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">SDD</text>
+  <text x="160" y="145" text-anchor="middle" font-size="12" fill="#e8f4fd">Spec 驱动</text>
+  <text x="160" y="170" text-anchor="middle" font-size="11" fill="#e8f4fd">先写规范"合同"</text>
+  <text x="160" y="190" text-anchor="middle" font-size="11" fill="#e8f4fd">需求无歧义</text>
+  <text x="160" y="210" text-anchor="middle" font-size="11" fill="#e8f4fd">人定义"做什么"</text>
+
+  <rect x="300" y="75" width="200" height="160" rx="12" fill="#5cb85c"/>
+  <text x="400" y="115" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">TDD</text>
+  <text x="400" y="145" text-anchor="middle" font-size="12" fill="#eaf7ea">测试驱动</text>
+  <text x="400" y="170" text-anchor="middle" font-size="11" fill="#eaf7ea">先写测试再实现</text>
+  <text x="400" y="190" text-anchor="middle" font-size="11" fill="#eaf7ea">红 → 绿 → 重构</text>
+  <text x="400" y="210" text-anchor="middle" font-size="11" fill="#eaf7ea">安全网保证质量</text>
+
+  <rect x="540" y="75" width="200" height="160" rx="12" fill="#e6a817"/>
+  <text x="640" y="115" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">Agent</text>
+  <text x="640" y="145" text-anchor="middle" font-size="12" fill="#fff8e6">AI 搭档</text>
+  <text x="640" y="170" text-anchor="middle" font-size="11" fill="#fff8e6">自动执行代码</text>
+  <text x="640" y="190" text-anchor="middle" font-size="11" fill="#fff8e6">解放生产力</text>
+  <text x="640" y="210" text-anchor="middle" font-size="11" fill="#fff8e6">Agent 写"怎么做"</text>
+
+  <!-- Results -->
+  <rect x="60" y="270" width="680" height="80" rx="12" fill="#fff" stroke="#e6a817" stroke-width="1.5"/>
+  <text x="400" y="298" text-anchor="middle" font-size="14" font-weight="bold" fill="#b8860b">项目交付成果</text>
+  <text x="400" y="322" text-anchor="middle" font-size="12" fill="#666">24 个自动化测试 | 29 条需求覆盖 | SQLite 数据库 | Flask Web API | 追溯矩阵</text>
+  <text x="400" y="342" text-anchor="middle" font-size="12" fill="#666">人写 1 份 Spec + N 条指令 → Agent 产出全部代码和测试</text>
+
+  <!-- Takeaway -->
+  <rect x="100" y="380" width="600" height="80" rx="10" fill="#4a90d9" opacity="0.08"/>
+  <text x="400" y="408" text-anchor="middle" font-size="15" font-weight="bold" fill="#4a90d9">你不该再一个人写代码了</text>
+  <text x="400" y="435" text-anchor="middle" font-size="12" fill="#666">从"码农"升级为"指挥官"——把重复劳动交给 AI，把创造力留给自己</text>
+  <text x="400" y="452" text-anchor="middle" font-size="12" fill="#666">这是你职业生涯的一次升级，而不仅仅是学会了新工具</text>
+</svg>

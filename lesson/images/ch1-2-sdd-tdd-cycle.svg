@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7a8ea8"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">SDD + TDD 工作流循环</text>
+  <!-- Center circle -->
+  <circle cx="400" cy="270" r="30" fill="#e6a817" opacity="0.15"/>
+  <text x="400" y="265" text-anchor="middle" font-size="11" fill="#b8860b">持续</text>
+  <text x="400" y="280" text-anchor="middle" font-size="11" fill="#b8860b">迭代</text>
+  <!-- 4 quadrants with arrows -->
+  <!-- Spec (top) -->
+  <rect x="325" y="70" width="150" height="60" rx="12" fill="#4a90d9"/>
+  <text x="400" y="98" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">① 规格文档</text>
+  <text x="400" y="118" text-anchor="middle" font-size="11" fill="#e8f4fd">Spec.md</text>
+  <path d="M400,130 L400,225" stroke="#7a8ea8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Test (right) -->
+  <rect x="555" y="240" width="150" height="60" rx="12" fill="#d9534f"/>
+  <text x="630" y="268" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">② 先写测试</text>
+  <text x="630" y="288" text-anchor="middle" font-size="11" fill="#fdecea">TDD Red</text>
+  <path d="M535,270 L460,270" stroke="#7a8ea8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Code (bottom) -->
+  <rect x="325" y="380" width="150" height="60" rx="12" fill="#5cb85c"/>
+  <text x="400" y="408" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">③ 实现代码</text>
+  <text x="400" y="428" text-anchor="middle" font-size="11" fill="#eaf7ea">TDD Green</text>
+  <path d="M400,340 L400,375" stroke="#7a8ea8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Refactor (left) -->
+  <rect x="95" y="240" width="150" height="60" rx="12" fill="#f0ad4e"/>
+  <text x="170" y="268" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">④ 重构优化</text>
+  <text x="170" y="288" text-anchor="middle" font-size="11" fill="#fff5e6">Refactor</text>
+  <path d="M250,270 L320,270" stroke="#7a8ea8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Curved return arrows -->
+  <path d="M170,305 C170,360 250,400 325,400" fill="none" stroke="#7a8ea8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <path d="M630,305 C630,360 550,400 475,400" fill="none" stroke="#7a8ea8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <!-- Bottom note -->
+  <rect x="150" y="455" width="500" height="30" rx="8" fill="#4a90d9" opacity="0.1"/>
+  <text x="400" y="475" text-anchor="middle" font-size="12" fill="#4a90d9">SDD 定义"做什么"，TDD 验证"做对了"，Agent 负责"做出来"</text>
+</svg>

@@ -1,34 +1,44 @@
-# SDD+TDD 实战系列：用户登录模块
+# SDD+TDD 实战系列：从零到一构建用户登录模块
 
-## 系列文章（10 篇）
+> **这就是你接下来的旅程。**
+>
+> 你写的每一行代码，都有一个故事。这个故事始于需求，终于验证，中间走过的每一步都清晰可循。下面的 10 篇文章，会带你亲历一次完整的 SDD（Spec-Driven Development）+ TDD 实战——从一个模糊的想法，到一套可运行的、有测试守护的用户登录系统。
+>
+> 这段路不短，但每一步都有脚印。准备好了吗？我们从第一行文档开始。
 
-| # | 文章 | 核心产物 |
-|---|------|---------|
-| 00 | [SDD+TDD 框架总览](00-sdd-tdd-intro.md) | 方法论 |
-| 01 | [把需求写成契约](01-spec-tutorial.md) | `SPEC.md` |
-| 02 | [把任务排成地图](02-plan-tutorial.md) | `PLAN.md` |
-| 03 | [把规范写成门禁](03-agent-tutorial.md) | `AGENT.md` |
-| 04 | [搭好工程底座](04-scaffold-tutorial.md) | `package.json` `.env` `.gitignore` |
-| 05 | [Iter 1：工具函数层](05-iter1-tutorial.md) | `utils/errors.js` `utils/password.js` `utils/jwt.js` |
-| 06 | [Iter 2：数据模型 + 种子](06-iter2-tutorial.md) | `models/user.js` `scripts/seed.js` |
-| 07 | [Iter 3：服务层](07-iter3-tutorial.md) | `services/authService.js` |
-| 08 | [Iter 4：HTTP 接口层](08-iter4-tutorial.md) | `controllers/` `routes/` `middleware/` |
-| 09 | [完整验证 + 回顾](09-iter5-tutorial.md) | 全部通过 ✅ |
+---
+
+## 系列文章索引
+
+| # | 文章 | 你将带走什么 |
+|---|------|-------------|
+| 00 | [SDD+TDD 框架总览](00-sdd-tdd-intro.md) | 一张完整的作战地图——理解 SDD 的核心原则、迭代节奏，以及为什么「先写文档后写代码」不是浪费时间，而是让你少走弯路 |
+| 01 | [把需求写成契约](01-spec-tutorial.md) | 学会把模糊的需求变成可执行的 `SPEC.md`——一份让开发、测试、AI 都能读懂的「黄金契约」 |
+| 02 | [把任务排成地图](02-plan-tutorial.md) | 学会从 SPEC 拆解出可落地的 `PLAN.md`——把一个大问题切成一口大小的任务块，每一步都有产出 |
+| 03 | [把规范写成门禁](03-agent-tutorial.md) | 学会用 `AGENT.md` 为 AI 编码助手设定行为边界——让工具听你的话，而不是反过来 |
+| 04 | [搭好工程底座](04-scaffold-tutorial.md) | 从零初始化项目骨架——`package.json`、`.env`、`.gitignore`，一个干净的起点胜过十次重构 |
+| 05 | [Iter 1：工具函数层](05-iter1-tutorial.md) | 从最简单的纯函数开始 TDD：错误处理、密码哈希、JWT 签发——3 个文件，13 个测试，步步为营 |
+| 06 | [Iter 2：数据模型 + 种子](06-iter2-tutorial.md) | 用 Sequelize 定义 User 模型，配合种子数据让数据库不再「空荡荡」——2 个文件，5 个测试，打通数据层 |
+| 07 | [Iter 3：服务层](07-iter3-tutorial.md) | 把业务逻辑收拢到 `authService.js`——注册、登录、令牌刷新，一次只做一件事，每件事都有测试兜底 |
+| 08 | [Iter 4：HTTP 接口层](08-iter4-tutorial.md) | 用 Express 把服务暴露成 REST API——控制器、路由、中间件，5 个文件 8 个测试，完整走通 HTTP 层 |
+| 09 | [完整验证 + 回顾](09-iter5-tutorial.md) | 30 个测试全部通过 ✅ 然后停下来回头看看——哪一步最痛苦？哪一步最值得？下一次你会怎么做得更好 |
+
+---
 
 ## 迭代流程
 
 ```
-Iter 0: SPEC / PLAN / AGENT / 脚手架
+Iter 0: SPEC / PLAN / AGENT / 脚手架           ← 先想清楚再动手
   ↓
-Iter 1: 工具函数 → 3 文件, 13 测试
+Iter 1: 工具函数 → 3 文件, 13 测试               ← 纯函数打底，测试先行
   ↓
-Iter 2: 数据模型 + 种子 → 2 文件, 5 测试
+Iter 2: 数据模型 + 种子 → 2 文件, 5 测试         ← 数据层稳稳落地
   ↓
-Iter 3: 服务层 → 1 文件, 3 测试
+Iter 3: 服务层 → 1 文件, 3 测试                  ← 业务逻辑收束
   ↓
-Iter 4: HTTP 接口 → 5 文件, 8 测试
+Iter 4: HTTP 接口 → 5 文件, 8 测试               ← 把一切暴露给外部
   ↓
-Iter 5: 验证 → 30 测试全部通过
+Iter 5: 验证 → 30 测试全部通过 ✅                 ← 冰冷的绿色就是最好的回报
 ```
 
 ## 验证
@@ -38,3 +48,5 @@ $ npm test
 Test Suites: 6 passed, 6 total
 Tests:       30 passed, 30 total
 ```
+
+> 30 个测试，6 个测试套件，全部绿色。这不是终点——这是你下一次旅程的起跑线。

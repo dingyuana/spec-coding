@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820" font-family="'Inter', 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="sh" x="-8%" y="-10%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect width="1100" height="820" rx="20" fill="url(#bg)"/>
+  <text x="550" y="48" text-anchor="middle" fill="#e2e8f0" font-size="26" font-weight="700">选型决策树：三个问题，找到你的框架</text>
+  <text x="550" y="72" text-anchor="middle" fill="#94a3b8" font-size="14">从你的团队规模、项目类型、流程偏好出发，三问定方向</text>
+
+  <!-- Q1 -->
+  <g filter="url(#sh)">
+    <rect x="380" y="100" width="340" height="70" rx="12" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="550" y="128" text-anchor="middle" fill="#f8fafc" font-size="15" font-weight="600">❶ 这是什么类型的项目？</text>
+    <text x="550" y="150" text-anchor="middle" fill="#94a3b8" font-size="11">存量老项目 / 新项目 / 企业系统</text>
+  </g>
+
+  <!-- branches from Q1 -->
+  <path d="M380,135 C270,135 200,200 200,260" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M550,170 L550,240" fill="none" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M720,135 C810,135 900,200 900,260" fill="none" stroke="#f472b6" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="270" y="178" fill="#38bdf8" font-size="12">存量迭代</text>
+  <text x="555" y="210" fill="#a78bfa" font-size="12">新项目</text>
+  <text x="815" y="178" fill="#f472b6" font-size="12">追求高质</text>
+
+  <!-- Q2 row: three question nodes -->
+  <g filter="url(#sh)">
+    <rect x="90" y="270" width="220" height="60" rx="10" fill="#0c1524" stroke="#38bdf8" stroke-width="1"/>
+    <text x="200" y="295" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">❷ 团队规模？</text>
+    <text x="200" y="315" text-anchor="middle" fill="#94a3b8" font-size="10">个人 / 小团队 / 企业</text>
+  </g>
+  <g filter="url(#sh)">
+    <rect x="440" y="270" width="220" height="60" rx="10" fill="#0c1524" stroke="#a78bfa" stroke-width="1"/>
+    <text x="550" y="295" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">❷ 流程偏好？</text>
+    <text x="550" y="315" text-anchor="middle" fill="#94a3b8" font-size="10">轻量 / 纪律 / 治理</text>
+  </g>
+  <g filter="url(#sh)">
+    <rect x="790" y="270" width="220" height="60" rx="10" fill="#0c1524" stroke="#f472b6" stroke-width="1"/>
+    <text x="900" y="295" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">❷ 对质量的执念？</text>
+    <text x="900" y="315" text-anchor="middle" fill="#94a3b8" font-size="10">可接受 / 高要求 / 铁律</text>
+  </g>
+
+  <!-- Branch labels down -->
+  <text x="135" y="375" fill="#38bdf8" font-size="11">个人 / 小团队</text>
+  <text x="275" y="375" fill="#f59e0b" font-size="11">多团队</text>
+  <text x="475" y="375" fill="#22c55e" font-size="11">不想被束缚</text>
+  <text x="610" y="375" fill="#f59e0b" font-size="11">需规范治理</text>
+  <text x="840" y="375" fill="#f472b6" font-size="11">重度 TDD</text>
+  <text x="955" y="375" fill="#f59e0b" font-size="11">团队自治</text>
+
+  <path d="M135,330 L135,400" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M265,330 L265,400" fill="none" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M490,330 L490,400" fill="none" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M610,330 L610,400" fill="none" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M840,330 L840,400" fill="none" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M955,330 L955,400" fill="none" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Final recommendations - 3 columns x 2 rows -->
+  <!-- OPEN- spec: top row left -->
+  <g filter="url(#sh)">
+    <rect x="40" y="410" width="190" height="160" rx="10" fill="#0c1524" stroke="#38bdf8" stroke-width="2"/>
+    <text x="135" y="442" text-anchor="middle" fill="#38bdf8" font-size="16" font-weight="700">✓ 选 OpenSpec</text>
+    <text x="135" y="468" text-anchor="middle" fill="#94a3b8" font-size="10">存量项目 · 小团队</text>
+    <line x1="55" y1="480" x2="215" y2="480" stroke="#1e293b"/>
+    <text x="55" y="502" fill="#e2e8f0" font-size="11">▸ 增量迭代最友好</text>
+    <text x="55" y="522" fill="#e2e8f0" font-size="11">▸ Delta Spec 精准变更</text>
+    <text x="55" y="542" fill="#e2e8f0" font-size="11">▸ npm 三步上手</text>
+    <text x="55" y="562" fill="#94a3b8" font-size="10">关键词：灵活、快速</text>
+  </g>
+
+  <!-- Spec-Kit: top row center-left -->
+  <g filter="url(#sh)">
+    <rect x="250" y="410" width="190" height="160" rx="10" fill="#0c1524" stroke="#a78bfa" stroke-width="2"/>
+    <text x="345" y="442" text-anchor="middle" fill="#a78bfa" font-size="16" font-weight="700">✓ 选 Spec-Kit</text>
+    <text x="345" y="468" text-anchor="middle" fill="#94a3b8" font-size="10">企业 · 跨团队 · 治理</text>
+    <line x1="265" y1="480" x2="425" y2="480" stroke="#1e293b"/>
+    <text x="265" y="502" fill="#e2e8f0" font-size="11">▸ 宪法机制保一致性</text>
+    <text x="265" y="522" fill="#e2e8f0" font-size="11">▸ 深度绑定 GitHub</text>
+    <text x="265" y="542" fill="#e2e8f0" font-size="11">▸ 规范化可追溯</text>
+    <text x="265" y="562" fill="#94a3b8" font-size="10">关键词：治理、可预测</text>
+  </g>
+
+  <!-- OpenSpec: top row center-right (lightweight preference) -->
+  <g filter="url(#sh)">
+    <rect x="460" y="410" width="190" height="160" rx="10" fill="#0c1524" stroke="#22c55e" stroke-width="2"/>
+    <text x="555" y="442" text-anchor="middle" fill="#22c55e" font-size="16" font-weight="700">✓ 选 OpenSpec</text>
+    <text x="555" y="468" text-anchor="middle" fill="#94a3b8" font-size="10">不想被流程束缚</text>
+    <line x1="475" y1="480" x2="635" y2="480" stroke="#1e293b"/>
+    <text x="475" y="502" fill="#e2e8f0" font-size="11">▸ 无阶段门约束</text>
+    <text x="475" y="522" fill="#e2e8f0" font-size="11">▸ 随时调整提案</text>
+    <text x="475" y="542" fill="#e2e8f0" font-size="11">▸ 迭代节奏自由</text>
+    <text x="475" y="562" fill="#94a3b8" font-size="10">关键词：流畅、敏捷</text>
+  </g>
+
+  <!-- Spec-Kit: top row center-right (governance preference) -->
+  <g filter="url(#sh)">
+    <rect x="670" y="410" width="190" height="160" rx="10" fill="#0c1524" stroke="#a78bfa" stroke-width="2"/>
+    <text x="765" y="442" text-anchor="middle" fill="#a78bfa" font-size="16" font-weight="700">✓ 选 Spec-Kit</text>
+    <text x="765" y="468" text-anchor="middle" fill="#94a3b8" font-size="10">需规范治理流程</text>
+    <line x1="685" y1="480" x2="845" y2="480" stroke="#1e293b"/>
+    <text x="685" y="502" fill="#e2e8f0" font-size="11">▸ 阶段门控式执行</text>
+    <text x="685" y="522" fill="#e2e8f0" font-size="11">▸ 模板 + 宪法约束</text>
+    <text x="685" y="542" fill="#e2e8f0" font-size="11">▸ 高可预测性</text>
+    <text x="685" y="562" fill="#94a3b8" font-size="10">关键词：严谨、秩序</text>
+  </g>
+
+  <!-- Superpowers: top row right -->
+  <g filter="url(#sh)">
+    <rect x="880" y="410" width="190" height="160" rx="10" fill="#0c1524" stroke="#f472b6" stroke-width="2"/>
+    <text x="975" y="442" text-anchor="middle" fill="#f472b6" font-size="16" font-weight="700">✓ 选 Superpowers</text>
+    <text x="975" y="468" text-anchor="middle" fill="#94a3b8" font-size="10">TDD 铁律信仰者</text>
+    <line x1="895" y1="480" x2="1055" y2="480" stroke="#1e293b"/>
+    <text x="895" y="502" fill="#e2e8f0" font-size="11">▸ 强制红-绿-重构</text>
+    <text x="895" y="522" fill="#e2e8f0" font-size="11">▸ 技能驱动模块</text>
+    <text x="895" y="542" fill="#e2e8f0" font-size="11">▸ 生产级质量输出</text>
+    <text x="895" y="562" fill="#94a3b8" font-size="10">关键词：铁律、自律</text>
+  </g>
+
+  <!-- BOTTOM: Golden Rule banner -->
+  <g filter="url(#sh)">
+    <rect x="60" y="620" width="980" height="60" rx="10" fill="#0c1524" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="100" y="648" fill="#f59e0b" font-size="14" font-weight="700">⚠ 黄金法则</text>
+    <text x="280" y="648" fill="#e2e8f0" font-size="13">先选一个用熟，不要将理念冲突的框架混用</text>
+    <text x="100" y="670" fill="#94a3b8" font-size="11">"笔记本"、"教官"、"宪法" 三种哲学不可共存于同一项目同一阶段</text>
+  </g>
+
+  <!-- Footer advice row -->
+  <text x="60" y="710" fill="#64748b" font-size="12">💡 入门建议</text>
+  <text x="175" y="710" fill="#94a3b8" font-size="12">先走 OpenSpec 轻量上手 · 需要质量铁律切 Superpowers · 企业治理升级 Spec-Kit</text>
+  <text x="60" y="740" fill="#64748b" font-size="12">💡 切换信号</text>
+  <text x="175" y="740" fill="#94a3b8" font-size="12">当"流程太轻撑不住"→升级 Spec-Kit；当"流程太重拖慢迭代"→回退 OpenSpec</text>
+  <text x="60" y="770" fill="#64748b" font-size="12">💡 学习路径</text>
+  <text x="175" y="770" fill="#94a3b8" font-size="12">OpenSpec（2 天）→ Superpowers 选一两个 Skills（1 周）→ Spec-Kit（1 月 + 团队共识）</text>
+
+  <text x="550" y="805" text-anchor="middle" fill="#475569" font-size="11" font-style="italic">"你不需要同时拥有三种武器。选一把，用好它，胜过同时摆弄三把都生疏。"</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">人类审查 + Agent 重构 = 最佳协作</text>
+  <!-- Left: Human -->
+  <rect x="60" y="80" width="300" height="320" rx="16" fill="#fff" stroke="#4a90d9" stroke-width="2"/>
+  <circle cx="210" cy="140" r="30" fill="#e8f4fd"/>
+  <text x="210" y="148" text-anchor="middle" font-size="28">👤</text>
+  <text x="210" y="190" text-anchor="middle" font-size="16" font-weight="bold" fill="#4a90d9">人类审查员</text>
+  <text x="210" y="220" text-anchor="middle" font-size="12" fill="#666">👁 判断代码质量</text>
+  <text x="210" y="245" text-anchor="middle" font-size="12" fill="#666">💡 发现设计问题</text>
+  <text x="210" y="270" text-anchor="middle" font-size="12" fill="#666">📋 定义"美"的标准</text>
+  <text x="210" y="295" text-anchor="middle" font-size="12" fill="#666">✅ 确认重构方案</text>
+  <!-- Right: Agent -->
+  <rect x="440" y="80" width="300" height="320" rx="16" fill="#fff" stroke="#5cb85c" stroke-width="2"/>
+  <circle cx="590" cy="140" r="30" fill="#eaf7ea"/>
+  <text x="590" y="148" text-anchor="middle" font-size="28">🤖</text>
+  <text x="590" y="190" text-anchor="middle" font-size="16" font-weight="bold" fill="#5cb85c">Agent 执行者</text>
+  <text x="590" y="220" text-anchor="middle" font-size="12" fill="#666">🔧 执行重构操作</text>
+  <text x="590" y="245" text-anchor="middle" font-size="12" fill="#666">🧪 运行测试验证</text>
+  <text x="590" y="270" text-anchor="middle" font-size="12" fill="#666">📊 报告重构结果</text>
+  <text x="590" y="295" text-anchor="middle" font-size="12" fill="#666">🔄 迭代直到满意</text>
+  <!-- Middle arrow -->
+  <path d="M360,220 L440,220" stroke="#e6a817" stroke-width="2" fill="none"/>
+  <polygon points="440,210 455,220 440,230" fill="#e6a817"/>
+  <text x="400" y="250" text-anchor="middle" font-size="11" fill="#b8860b">指令</text>
+  <!-- Bottom -->
+  <rect x="100" y="400" width="600" height="35" rx="8" fill="#e6a817" opacity="0.1"/>
+  <text x="400" y="423" text-anchor="middle" font-size="13" fill="#b8860b">人定义"美"，Agent 执行"整容手术"——测试保证安全</text>
+</svg>

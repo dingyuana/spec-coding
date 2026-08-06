@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdecea"/>
+      <stop offset="100%" stop-color="#f5d6d6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#d9534f">红色是故事的起点 — TDD Red 阶段</text>
+  <!-- Test list -->
+  <rect x="60" y="70" width="680" height="45" rx="8" fill="#d9534f"/>
+  <text x="400" y="98" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">pytest 测试结果：15 个测试，15 个失败（红）</text>
+  <!-- Test cases -->
+  <g transform="translate(80, 135)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_valid_email_format</text>
+  </g>
+  <g transform="translate(80, 185)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_invalid_email</text>
+  </g>
+  <g transform="translate(80, 235)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_password_strength</text>
+  </g>
+  <g transform="translate(420, 135)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_duplicate_username</text>
+  </g>
+  <g transform="translate(420, 185)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_empty_fields</text>
+  </g>
+  <g transform="translate(420, 235)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#fff" stroke="#d9534f" stroke-width="1"/>
+    <rect x="5" y="5" width="30" height="30" rx="15" fill="#d9534f"/>
+    <text x="20" y="25" text-anchor="middle" font-size="12" fill="#fff">✗</text>
+    <text x="50" y="25" font-size="13" fill="#d9534f">test_...（更多）</text>
+  </g>
+  <!-- Bottom instruction flow -->
+  <rect x="100" y="310" width="600" height="60" rx="12" fill="#fff" stroke="#d9534f" stroke-width="2"/>
+  <text x="400" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#d9534f">人 → Agent：读取 Spec.md，执行第二阶段 TDD-Red，编写全部测试</text>
+  <text x="400" y="355" text-anchor="middle" font-size="12" fill="#888">Agent 根据 Spec 自动生成测试代码，运行后全部红色（失败）→ 这是计划中的</text>
+  <!-- Red to Green hint -->
+  <rect x="200" y="390" width="400" height="40" rx="8" fill="#d9534f" opacity="0.1"/>
+  <text x="400" y="415" text-anchor="middle" font-size="13" fill="#d9534f">红色 = 测试已就位，等待实现代码 → 下一章让绿色出现</text>
+</svg>

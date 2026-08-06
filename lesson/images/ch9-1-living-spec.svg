@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">活的规格文档 — 与代码共演化</text>
+  <!-- Two columns: Static vs Living -->
+  <rect x="60" y="70" width="320" height="200" rx="12" fill="#fdecea" stroke="#d9534f" stroke-width="2"/>
+  <text x="220" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#d9534f">❌ 静态文档</text>
+  <text x="220" y="130" text-anchor="middle" font-size="12" fill="#666">写完后锁进抽屉</text>
+  <text x="220" y="155" text-anchor="middle" font-size="12" fill="#666">代码改了，文档没更新</text>
+  <text x="220" y="180" text-anchor="middle" font-size="12" fill="#666">没人知道文档是否过时</text>
+  <text x="220" y="205" text-anchor="middle" font-size="12" fill="#666">最终被废弃</text>
+
+  <rect x="420" y="70" width="320" height="200" rx="12" fill="#eaf7ea" stroke="#5cb85c" stroke-width="2"/>
+  <text x="580" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#5cb85c">✅ 活的 Spec</text>
+  <text x="580" y="130" text-anchor="middle" font-size="12" fill="#666">Agent 始终以 Spec 为准</text>
+  <text x="580" y="155" text-anchor="middle" font-size="12" fill="#666">代码变更 → 更新 Spec</text>
+  <text x="580" y="180" text-anchor="middle" font-size="12" fill="#666">Spec 变更 → 更新测试</text>
+  <text x="580" y="205" text-anchor="middle" font-size="12" fill="#666">文档与代码始终同步</text>
+
+  <!-- Lifecycle -->
+  <rect x="100" y="300" width="600" height="55" rx="10" fill="#fff" stroke="#e6a817" stroke-width="1.5"/>
+  <text x="400" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#b8860b">Spec 生命周期</text>
+  <text x="400" y="345" text-anchor="middle" font-size="12" fill="#666">创建 Spec → Agent 写测试 → Agent 实现 → 重构 → Spec 更新 → 循环</text>
+
+  <!-- Bottom -->
+  <rect x="150" y="385" width="500" height="45" rx="8" fill="#4a90d9" opacity="0.1"/>
+  <text x="400" y="405" text-anchor="middle" font-size="13" fill="#4a90d9">Spec 不是静态文档，而是项目的中枢神经系统</text>
+  <text x="400" y="422" text-anchor="middle" font-size="11" fill="#888">每次变更，Spec 和代码互相驱动</text>
+</svg>

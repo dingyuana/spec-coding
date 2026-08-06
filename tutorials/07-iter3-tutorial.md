@@ -1,52 +1,182 @@
-# Iter 3：服务层——登录业务逻辑
+# Iter 3：服务层——为什么抽一层 + Mock 隔离测试
 
-> **场景带入 → 发现问题 → 方案迭代 → 原理拆解 → 效果对比 → 情绪升华**
-
----
-
-> Iter 2 我们有了 User 模型和种子数据，Iter 1 有了密码和 JWT 工具。现在把它们串起来——**写登录业务逻辑**。
->
-> 只做 **1 个文件**：`services/authService.js`，外加 3 条测试。
+> **登录逻辑不到 5 行代码，但这 5 行决定了你的系统是堡垒还是纸糊的。**
 
 ---
 
-## 一、你肯定遇到过的问题
+## 一、理论：为什么抽服务层？为什么要 Mock？
 
-登录业务逻辑看起来很简单："查用户 → 验密码 → 签 JWT → 返回 token"。三行代码的事。
+### 1.1 为什么非要把业务逻辑拆一层？
 
-但实际写起来，你可能会遇到：
+最直观的做法：控制器里直接查数据库、验密码、签 JWT。一条龙搞定。
 
-- 查不到用户时直接返回 404——但 SPEC 要求 401
-- 密码错误和用户不存在返回不同的错误消息——**给了攻击者枚举用户的线索**
-- 签 JWT 时忘了传 `user_id`——payload 里没有用户信息，前端拿不到当前用户 ID
+**问题来了：你怎么测这个函数？**
 
-**一个登录函数只有 5 行，但这 5 行决定了系统的安全性。**
+你要启动数据库、插入测试用户、发出 HTTP 请求、等数据库响应……一套下来 **5 秒**。测三个分支就是 15 秒。测完你还得清理数据。
 
-## 二、为什么要把业务逻辑单独拆一层？
+更致命的是：这测试依赖了太多东西——数据库通不通？密码库对不对？JWT 签名有没有 bug？**你要测的是"登录的逻辑"，不是这些底层模块。**
 
-最直接的做法：把登录逻辑写在控制器里。
+所以我们要把"业务判断"从控制器里抽出来，放到 `services/` 层：
 
-```javascript
-// 控制器里直接查数据库
-async login(ctx) {
-  const user = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-  if (!user) { ctx.status = 401; return; }
-  // ...
-}
+```
+控制器（参数校验 + 格式化响应）
+   ↕
+服务层（业务逻辑判断）  ← 我们在这儿
+   ↕
+模型 / 工具（数据库、密码、JWT）
 ```
 
-**问题：** 测试这个函数需要启动数据库、插入用户、发 HTTP 请求。**太慢了，而且依赖太多。**
+分工明确，各司其职。
 
-所以我们要把"业务逻辑"单独拆到 `services/` 层，让控制器只做"参数校验 + 格式化响应"，服务层只做"业务判断"。
+### 1.2 Mock 隔离测试
+
+**没有 mock 的测试：**
+
+1. 启动数据库 → 等 1 秒
+2. 插入种子用户 → 等 1 秒
+3. 发 HTTP POST → 等 1 秒
+4. 查询验证 → 等 1 秒
+5. 清理数据 → 等 1 秒
+
+**跑一次 5 秒。** 3 条测试 15 秒。等你喝杯咖啡回来，测试还没跑完。
+
+**有了 mock：**
+
+**跑一次 0.1 秒。** 3 条测试 0.3 秒。你连咖啡杯都不用端起来。
+
+**为什么？** 因为 Iter 1 已经测了密码和 JWT，Iter 2 已经测了 User 模型。**这里只测"当用户存在时干什么、不存在时干什么"**——不重复测别人已经测过的东西。
+
+Mock 的核心思想是：**用假的对象替换真实的依赖，只测试当前层的逻辑。**
 
 ![](imgs/07/01-mock-isolation.svg)
 
-## 三、先写测试：mock 掉所有外部依赖
+---
 
-测试服务层的关键技巧：**不依赖真实的模型、密码、JWT，全部用 mock 替代。**
+## 二、本项目实际代码
+
+### 2.1 `src/services/authService.js` — 5 行逻辑，3 个分支
+
+```javascript
+// src/services/authService.js
+/**
+ * 认证服务
+ * Iter 3: 服务层
+ * 依赖：UserModel, password, jwt
+ */
+const UserModel = require('../models/user');
+const { verifyPassword } = require('../utils/password');
+const { signToken } = require('../utils/jwt');
+const { Errors } = require('../utils/errors');
+
+const AuthService = {
+  async login({ username, password }) {
+    const user = UserModel.findByUsername(username);
+    if (!user) throw Errors.INVALID_CREDENTIALS;
+    const isValid = await verifyPassword(password, user.passwordHash);
+    if (!isValid) throw Errors.INVALID_CREDENTIALS;
+    const token = signToken(user.id);
+    return { token };
+  },
+};
+
+module.exports = AuthService;
+```
+
+**5 行逻辑，3 个分支：**
+
+| 条件 | 结果 | 说明 |
+|------|------|------|
+| 用户不存在 | `throw Errors.INVALID_CREDENTIALS`（401） | 和密码错误返回**完全相同**的错误 |
+| 密码错误 | `throw Errors.INVALID_CREDENTIALS`（401，完全相同） | 防止枚举攻击 |
+| 都通过 | 签 JWT，返回 `{ token }` | 登录成功 |
+
+![](imgs/07/02-login-flow.svg)
+
+### 2.3 相同错误消息防枚举
+
+这是本项目最精妙的安全设计。很多新手犯的错误：
+
+```javascript
+// ❌ 错误做法——给攻击者送情报
+if (!user) throw { message: '用户不存在', statusCode: 404 };
+if (!pass) throw { message: '密码错误', statusCode: 401 };
+```
+
+现在攻击者可以写个脚本：
+
+```
+POST /api/login  username=admin   → "密码错误"      👉 用户 admin 存在，继续爆破密码
+POST /api/login  username=ghost   → "用户不存在"    👉 跳过，没有这个用户
+```
+
+**这不叫登录，这叫打开大门让攻击者枚举你的用户表。**
+
+我们的实现让所有非法登录都收到同一个回答——`Errors.INVALID_CREDENTIALS`：
+
+```javascript
+if (!user) throw Errors.INVALID_CREDENTIALS;       // 用户不存在
+if (!isValid) throw Errors.INVALID_CREDENTIALS;     // 密码错误
+```
+
+第 14 行和第 16 行抛出**完全相同的错误对象**，都是 `{ statusCode: 401, message: '用户名或密码错误' }`。攻击者无从判断到底是用户名错了还是密码错了，等于在黑暗中摸瞎。
+
+> **审美即安全，接口设计的对称性直接决定了攻击面大小。**
+
+### 2.4 测试：`tests/unit/authService.test.js`（3 条测试，Mock 所有依赖）
 
 ```javascript
 // tests/unit/authService.test.js
+/**
+ * 认证服务 — TDD 测试
+ * Iter 3: 服务层
+ * 覆盖：正常登录 / 密码错误 / 用户不存在
+ */
+
+const mockUserModel = { findByUsername: jest.fn() };
+const mockPassword = { verifyPassword: jest.fn() };
+const mockJwt = { signToken: jest.fn() };
+
+jest.mock('../../src/models/user', () => mockUserModel);
+jest.mock('../../src/utils/password', () => mockPassword);
+jest.mock('../../src/utils/jwt', () => mockJwt);
+
+const AuthService = require('../../src/services/authService');
+
+describe('AuthService.login', () => {
+  const mockUser = { id: 1, username: 'admin', passwordHash: 'hashed-password' };
+
+  beforeEach(() => { jest.clearAllMocks(); });
+
+  it('用户名密码正确应返回 token', async () => {
+    mockUserModel.findByUsername.mockReturnValue(mockUser);
+    mockPassword.verifyPassword.mockResolvedValue(true);
+    mockJwt.signToken.mockReturnValue('valid-token');
+
+    const result = await AuthService.login({ username: 'admin', password: 'admin123' });
+    expect(mockUserModel.findByUsername).toHaveBeenCalledWith('admin');
+    expect(mockPassword.verifyPassword).toHaveBeenCalledWith('admin123', 'hashed-password');
+    expect(mockJwt.signToken).toHaveBeenCalledWith(1);
+    expect(result).toEqual({ token: 'valid-token' });
+  });
+
+  it('密码错误应抛出 INVALID_CREDENTIALS', async () => {
+    mockUserModel.findByUsername.mockReturnValue(mockUser);
+    mockPassword.verifyPassword.mockResolvedValue(false);
+    await expect(AuthService.login({ username: 'admin', password: 'wrongpass' }))
+      .rejects.toMatchObject({ statusCode: 401, message: '用户名或密码错误' });
+  });
+
+  it('用户不存在应抛出 INVALID_CREDENTIALS', async () => {
+    mockUserModel.findByUsername.mockReturnValue(undefined);
+    await expect(AuthService.login({ username: 'ghost', password: 'x' }))
+      .rejects.toMatchObject({ statusCode: 401, message: '用户名或密码错误' });
+  });
+});
+```
+
+**Mock 的设计：**
+
+```javascript
 const mockUserModel = { findByUsername: jest.fn() };
 const mockPassword = { verifyPassword: jest.fn() };
 const mockJwt = { signToken: jest.fn() };
@@ -56,93 +186,60 @@ jest.mock('../../src/utils/password', () => mockPassword);
 jest.mock('../../src/utils/jwt', () => mockJwt);
 ```
 
-**为什么？** 因为我们要测的是"登录的逻辑"，不是"数据库能用吗"。“密码加密对吗"、"JWT 签名对吗"。那些已经在 Iter 1 和 Iter 2 测过了。**这里只测"当用户存在时干什么、不存在时干什么"。**
+三行 `jest.mock` 替换了 `authService.js` 的全部三个依赖。测试在**完全隔离**的环境中运行——不碰真实数据库、不碰真实 bcrypt、不碰真实 JWT。
 
-### 写测试（RED）
+**3 条测试覆盖了什么：**
 
-```javascript
-it('用户名密码正确应返回 token', async () => {
-  mockUserModel.findByUsername.mockReturnValue({ id: 1, passwordHash: 'hash' });
-  mockPassword.verifyPassword.mockResolvedValue(true);
-  mockJwt.signToken.mockReturnValue('valid-token');
+| 测试 | 场景 | Mock 设置 | 断言 |
+|------|------|-----------|------|
+| happy path | 用户存在 + 密码正确 | findByUsername 返回用户, verifyPassword 返回 true | 返回 `{ token }` |
+| password error | 密码错误 | verifyPassword 返回 false | 抛出 `{ 401, '用户名或密码错误' }` |
+| user not found | 用户不存在 | findByUsername 返回 undefined | 抛出 `{ 401, '用户名或密码错误' }` |
 
-  const result = await AuthService.login({ username: 'admin', password: 'admin123' });
-  expect(result).toEqual({ token: 'valid-token' });
-});
-```
+注意第 2 条和第 3 条测试断言了**完全相同的错误对象**——这就是防枚举攻击的保证。
 
-这条测试覆盖了"用户存在 → 密码正确 → 返回 token"的 happy path。注意 `signToken` 被调用时传的是 `1`（用户 ID），不是用户对象，不是字符串。
+---
 
-```javascript
-it('密码错误应抛出 INVALID_CREDENTIALS', async () => {
-  mockUserModel.findByUsername.mockReturnValue({ id: 1, passwordHash: 'hash' });
-  mockPassword.verifyPassword.mockResolvedValue(false);
+## 三、Iter 3 的本质
 
-  await expect(AuthService.login({ username: 'admin', password: 'wrong' }))
-    .rejects.toMatchObject({ statusCode: 401 });
-});
+这一轮你学会的其实不是怎么写 5 行代码。你学会的是：
 
-it('用户不存在应抛出 INVALID_CREDENTIALS（与密码错误相同）', async () => {
-  mockUserModel.findByUsername.mockReturnValue(undefined);
+- **抽象服务层**——让控制器只做控制器的事，逻辑层只做逻辑的事
+- **Mock 依赖**——不测别人的代码，只测你的判断逻辑，速度从 5 秒降到 0.1 秒
+- **安全设计**——相同的错误消息不是偷懒，是故意堵住枚举攻击的路
 
-  await expect(AuthService.login({ username: 'ghost', password: 'x' }))
-    .rejects.toMatchObject({ statusCode: 401, message: '用户名或密码错误' });
-});
-```
+**一段 5 行的登录函数，用对了模式就是防御堡垒，随手一写就是安全漏洞。**
 
-**关键：** 两条测试都断言 `statusCode: 401`，且消息相同。这是 SPEC 里"防枚举攻击"的要求——攻击者无法通过错误消息判断"这个用户存在但密码错了"还是"这个用户不存在"。
+---
 
-### 写实现（GREEN）
-
-```javascript
-// src/services/authService.js
-const AuthService = {
-  async login({ username, password }) {
-    const user = UserModel.findByUsername(username);
-    if (!user) throw Errors.INVALID_CREDENTIALS;        // 用户不存在
-    const isValid = await verifyPassword(password, user.passwordHash);
-    if (!isValid) throw Errors.INVALID_CREDENTIALS;      // 密码错误
-    const token = signToken(user.id);
-    return { token };
-  },
-};
-```
-
-**5 行代码，3 个分支：**
-
-![](imgs/07/02-login-flow.svg)
-
-| 条件 | 结果 |
-|------|------|
-| 用户不存在 | `throw Errors.INVALID_CREDENTIALS`（401） |
-| 密码错误 | `throw Errors.INVALID_CREDENTIALS`（401，**相同错误**） |
-| 都通过 | 签 JWT，返回 `{ token }` |
-
-第 2 行和第 3 行抛出**完全相同的错误对象**。这不是巧合，是 SPEC 第 4 条业务规则的要求。
-
-**跑测试：** `npx jest tests/unit/authService.test.js` → 3 条全绿 ✅
-
-## 四、Iter 3 的本质：mock 让测试变快
-
-没有 mock 的测试：要启动数据库、要创建用户、要连 JWT 服务——**跑一次 5 秒。**
-
-有 mock 的测试：只测业务逻辑，不依赖任何外部服务——**跑一次 0.1 秒。**
-
-**3 条测试，100% 分支覆盖。**
-
-## 五、验证
+## 四、验证：全部测试通过
 
 ```bash
 $ npx jest tests/unit/
-Tests: 21 passed, 21 total ✅
+
+Test Suites: 5 passed, 5 total
+Tests:       24 passed, 24 total ✅
 ```
 
-## 六、进入 Iter 4
+到 Iter 3 结束，**24 条测试，全部通过。**
 
-服务层写好了，接下来把业务逻辑暴露成 HTTP 接口——**控制器 + 路由 + 错误处理。**
+| Iter | 模块 | 测试条数 |
+|------|------|---------|
+| Iter 1 | 密码 + JWT + 错误工具 | 13 |
+| Iter 2 | User 模型 | 8 |
+| Iter 3 | Auth 服务层 | 3 |
+| **合计** | | **24 ** |
+
+每一条都是实打实的逻辑覆盖，没有冗余，没有依赖。**24 passed，全绿收工。** ✅
+
+---
+
+## 五、进入 Iter 4
+
+服务层写好了。接下来要想办法让别人能调用它——**控制器 + 路由 + 错误处理中间件。**
 
 ```
-Tests: 21 passed, 21 total ✅
+Tests: 24 passed, 24 total ✅
 ```
 
 ---

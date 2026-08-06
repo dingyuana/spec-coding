@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">完整项目目录一览</text>
+  <!-- Tree -->
+  <g transform="translate(100, 70)">
+    <text x="0" y="0" font-size="14" font-weight="bold" fill="#e6a817">sdd-tdd-agent-login/</text>
+    <!-- Level 1 files -->
+    <text x="30" y="30" font-size="12" fill="#333">├── .gitignore</text>
+    <text x="30" y="55" font-size="12" fill="#333">├── pytest.ini</text>
+    <text x="30" y="80" font-size="12" fill="#333">├── requirements.txt</text>
+    <text x="30" y="105" font-size="12" fill="#333">├── Agent.md</text>
+    <!-- Directory: docs/ -->
+    <text x="30" y="135" font-size="12" fill="#4a90d9" font-weight="bold">├── docs/</text>
+    <text x="60" y="160" font-size="12" fill="#333">│   ├── Spec.md</text>
+    <text x="60" y="185" font-size="12" fill="#333">│   ├── Task.md</text>
+    <text x="60" y="210" font-size="12" fill="#333">│   └── traceability.md</text>
+    <!-- Directory: src/ -->
+    <text x="30" y="240" font-size="12" fill="#5cb85c" font-weight="bold">├── src/</text>
+    <text x="60" y="265" font-size="12" fill="#333">│   ├── register.py</text>
+    <text x="60" y="290" font-size="12" fill="#333">│   ├── database.py</text>
+    <text x="60" y="315" font-size="12" fill="#333">│   └── app.py</text>
+    <!-- Directory: tests/ -->
+    <text x="30" y="345" font-size="12" fill="#d9534f" font-weight="bold">└── tests/</text>
+    <text x="60" y="370" font-size="12" fill="#333">    ├── test_register.py</text>
+    <text x="60" y="395" font-size="12" fill="#333">    └── test_integration.py</text>
+  </g>
+  <!-- Summary box -->
+  <rect x="100" y="420" width="600" height="55" rx="10" fill="#fff" stroke="#e6a817" stroke-width="1.5"/>
+  <text x="400" y="445" text-anchor="middle" font-size="13" font-weight="bold" fill="#b8860b">项目文件组成</text>
+  <text x="400" y="465" text-anchor="middle" font-size="12" fill="#666">3 个配置文件 | 4 个文档（Spec/Task/追溯/Agent规则） | 3 个源码 | 2 个测试文件</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f4f8"/>
+      <stop offset="100%" stop-color="#e8eef5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)" rx="12"/>
+  <text x="400" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">开发环境架构</text>
+  <!-- Bottom layer: OS -->
+  <rect x="100" y="370" width="600" height="50" rx="8" fill="#6c757d"/>
+  <text x="400" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">操作系统（Linux / macOS / Windows）</text>
+  <!-- Middle layer: Python env -->
+  <rect x="100" y="280" width="600" height="70" rx="8" fill="#4a90d9"/>
+  <text x="400" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Python 运行时 3.12+</text>
+  <text x="400" y="330" text-anchor="middle" font-size="12" fill="#e8f4fd">pip / venv / requirements.txt</text>
+  <!-- Top layer stacked -->
+  <rect x="100" y="190" width="285" height="70" rx="8" fill="#5cb85c"/>
+  <text x="242" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">pytest 测试框架</text>
+  <text x="242" y="240" text-anchor="middle" font-size="12" fill="#eaf7ea">pytest.ini / conftest.py</text>
+
+  <rect x="415" y="190" width="285" height="70" rx="8" fill="#f0ad4e"/>
+  <text x="557" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Hermes Agent</text>
+  <text x="557" y="240" text-anchor="middle" font-size="12" fill="#fff5e6">Agent.md 规则文件</text>
+
+  <!-- Top: Project -->
+  <rect x="250" y="100" width="300" height="70" rx="8" fill="#e6a817"/>
+  <text x="400" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">项目代码</text>
+  <text x="400" y="150" text-anchor="middle" font-size="12" fill="#fff8e6">Spec.md → 测试 → 实现代码</text>
+
+  <!-- Arrows -->
+  <line x1="400" y1="170" x2="400" y2="190" stroke="#999" stroke-width="2"/>
+  <line x1="242" y1="260" x2="242" y2="280" stroke="#999" stroke-width="2"/>
+  <line x1="557" y1="260" x2="557" y2="280" stroke="#999" stroke-width="2"/>
+  <line x1="400" y1="350" x2="400" y2="370" stroke="#999" stroke-width="2"/>
+</svg>
