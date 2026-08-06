@@ -1,0 +1,134 @@
+module: auth
+description: 用户登录模块，支持用户名密码登录、JWT Token 返回、密码加密存储
+version: "1.0.0"
+status: active
+
+dependencies:
+  - module: user
+    reason: 登录需要查询用户信息和密码哈希
+  - module: utils/password
+    reason: 密码 bcrypt 哈希验证
+  - module: utils/jwt
+    reason: 登录成功后签发 JWT Token
+
+endpoints:
+  - method: POST
+    path: /api/auth/login
+    description: 用户登录接口
+    request:
+      body:
+        - name: username
+          type: string
+          required: true
+          description: 用户名
+        - name: password
+          type: string
+          required: true
+          description: 用户密码
+    response:
+      success:
+        status: 200
+        body:
+          - name: token
+            type: string
+            description: JWT Access Token（24h 过期）
+      errors:
+        - code: MISSING_PARAMS
+          status: 400
+          message: "用户名和密码不能为空"
+          condition: username 或 password 缺失
+        - code: INVALID_CREDENTIALS
+          status: 401
+          message: "用户名或密码错误"
+          condition: 用户不存在或密码错误
+        - code: INTERNAL_ERROR
+          status: 500
+          message: "服务器内部错误"
+          condition: 未预期的服务器异常
+
+models:
+  - name: User
+    description: 用户数据模型，存储在内存中（教学项目）
+    fields:
+      - name: id
+        type: number
+        required: true
+        description: 自增主键
+      - name: username
+        type: string
+        required: true
+        constraints: "唯一，长度 3-20"
+        description: 用户名
+      - name: passwordHash
+        type: string
+        required: true
+        description: bcrypt 加密后的密码哈希
+    methods:
+      - name: findByUsername
+        description: 根据用户名查找用户
+        params:
+          - name: username
+            type: string
+        returns: User | undefined
+      - name: create
+        description: 创建新用户
+        params:
+          - name: data
+            type: object
+        returns: User
+      - name: clear
+        description: 清空所有用户（仅测试用）
+        params: []
+        returns: void
+
+scenarios:
+  - id: S1
+    description: 正常登录
+    given: "数据库中已存在用户 admin"
+    when: "用户提交正确的 username 和 password"
+    then: "返回 200 和 JWT Token"
+    also: "Token payload 包含 user_id 字段"
+
+  - id: S2
+    description: 密码错误
+    given: "数据库中已存在用户 admin"
+    when: "用户提交正确 username 但错误 password"
+    then: "返回 401"
+    also: "响应体为 { error: '用户名或密码错误' }"
+
+  - id: S3
+    description: 用户不存在
+    given: "数据库中不存在指定用户"
+    when: "用户提交不存在的 username"
+    then: "返回 401"
+    also: "响应体为 { error: '用户名或密码错误' }（与 S2 一致，防止用户枚举）"
+
+  - id: S4
+    description: 参数缺失
+    given: "请求体缺少 username 或 password"
+    when: "用户提交不完整的登录请求"
+    then: "返回 400"
+    also: "响应体为 { error: '用户名和密码不能为空' }"
+
+edge_cases:
+  - description: 同一用户名先后提交正确和错误密码
+    expected: 两次调用互不影响，状态无残留
+  - description: password 字段为超长字符串
+    expected: bcrypt 正常处理，不因长度拒绝
+  - description: 请求体包含额外字段
+    expected: 忽略额外字段，只读取 username 和 password
+
+security:
+  - rule: 密码错误和用户不存在的错误消息必须完全相同
+    reason: "防止攻击者通过响应差异枚举有效用户名"
+  - rule: 密码以 bcrypt 哈希存储，禁止明文
+    reason: "数据库泄露时密码仍可保护"
+  - rule: JWT_SECRET 从 .env 读取，禁止硬编码
+    reason: "密钥泄露会导致 token 可被伪造"
+  - rule: 密码哈希不在任何响应中返回
+    reason: "防止中间件或序列化层意外暴露"
+
+non_goals:
+  - "不实现注册接口（仅种子数据预置 admin）"
+  - "不实现登出/刷新 Token"
+  - "不使用数据库（使用内存模型，教学项目简化）"

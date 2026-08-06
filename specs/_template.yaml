@@ -1,0 +1,95 @@
+# OpenSpec 模板 — 模块级契约
+# 纯 YAML 格式，禁止混入 Markdown 语法
+#
+# 使用方法：
+#   1. 复制此文件到 specs/<module-name>.yaml
+#   2. 填写下方所有字段
+#   3. 禁止在 YAML 值中使用 - **xxx:** 等 Markdown 符号
+#   4. 每个模块对应一个 yaml 文件，文件名即模块名
+
+module: "<module-name>"
+description: "<一句话描述该模块的职责>"
+version: "1.0.0"
+
+# 模块状态
+status: draft | active | deprecated
+
+# 前置依赖
+dependencies:
+  - module: "<module-name>"
+    reason: "<为什么依赖它>"
+
+# 接口定义（HTTP 模块）
+endpoints:
+  - method: POST | GET | PUT | DELETE | PATCH
+    path: "/api/..."
+    description: "<接口一句话描述>"
+    request:
+      body:
+        - name: "<field>"
+          type: string | number | boolean | array | object
+          required: true | false
+          description: "<字段说明>"
+      params:
+        - name: "<field>"
+          type: string | number
+          required: true | false
+          description: "<字段说明>"
+      query:
+        - name: "<field>"
+          type: string | number
+          required: true | false
+          description: "<字段说明>"
+    response:
+      success:
+        status: 200 | 201
+        body:
+          - name: "<field>"
+            type: string | number | boolean | object | array
+            description: "<字段说明>"
+      errors:
+        - code: "<错误码>"
+          status: 400 | 401 | 403 | 404 | 500
+          message: "<错误消息>"
+          condition: "<触发条件>"
+
+# 数据模型定义
+models:
+  - name: "<ModelName>"
+    description: "<模型说明>"
+    fields:
+      - name: "<field>"
+        type: string | number | boolean | Date | object
+        required: true | false
+        constraints: "<约束说明，如 长度 3-20>"
+        default: "<默认值>"
+    methods:
+      - name: "<methodName>"
+        description: "<方法说明>"
+        params:
+          - name: "<param>"
+            type: "<type>"
+        returns: "<返回值说明>"
+
+# 验收标准（Scenario 列表）
+scenarios:
+  - id: "<S1>"
+    description: "<场景描述>"
+    given: "<前提条件>"
+    when: "<触发操作>"
+    then: "<预期结果>"
+    also: "<额外预期（可选）>"
+
+# 边界条件
+edge_cases:
+  - description: "<边界条件描述>"
+    expected: "<预期行为>"
+
+# 安全规则
+security:
+  - rule: "<规则描述>"
+    reason: "<为什么需要这条规则>"
+
+# 非目标（Non-goals）
+non_goals:
+  - "<不做某事的原因说明>"

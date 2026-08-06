@@ -1,0 +1,70 @@
+module: user
+description: 用户数据模型，管理用户的增删查操作
+version: "1.0.0"
+status: active
+
+dependencies:
+  - module: utils/password
+    reason: 创建用户时需要对密码进行 bcrypt 哈希
+
+models:
+  - name: User
+    description: 用户数据模型，存储在内存数组中
+    fields:
+      - name: id
+        type: number
+        required: true
+        description: 自增主键，从 1 开始
+      - name: username
+        type: string
+        required: true
+        constraints: "唯一"
+        description: 用户名
+      - name: passwordHash
+        type: string
+        required: true
+        description: bcrypt 加密后的密码哈希
+    methods:
+      - name: findByUsername
+        description: 根据用户名查找用户
+        params:
+          - name: username
+            type: string
+        returns: User | undefined
+      - name: create
+        description: "创建新用户（内部已对 password 做 bcrypt 哈希）"
+        params:
+          - name: data
+            type: object
+        returns: User
+      - name: clear
+        description: 清空所有用户并重置自增 ID（仅测试用）
+        params: []
+        returns: void
+
+scenarios:
+  - id: US1
+    description: 创建用户
+    given: "用户集合为空"
+    when: "调用 create({ username: 'admin', password: 'admin123' })"
+    then: "返回 User，id 为 1"
+    also: "passwordHash 是 bcrypt 哈希，不是明文"
+
+  - id: US2
+    description: 根据用户名查找
+    given: "已创建用户 admin"
+    when: "调用 findByUsername('admin')"
+    then: "返回该 User"
+
+  - id: US3
+    description: 查找不存在的用户
+    given: "已创建用户 admin"
+    when: "调用 findByUsername('hacker')"
+    then: "返回 undefined"
+
+  - id: US4
+    description: 清空用户
+    given: "已创建若干用户"
+    when: "调用 clear()"
+    then: "用户集合为空"
+    also: "自增 ID 重置为 0"
